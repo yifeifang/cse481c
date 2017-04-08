@@ -1,0 +1,46 @@
+# Starting ROS and the Fetch simulator and getting the starter code
+
+## Start ROS
+```
+roscore
+```
+
+## Start the Fetch simulator
+```
+roslaunch fetch_gazebo playground.launch
+```
+
+The very first time you run the simulator on a new computer, it will take some time to start up.
+If it doesn't appear to work after a minute or so, shut down the simulator with Ctrl-C and restart it.
+It may take several tries.
+
+You should see the following:
+![image](https://cloud.githubusercontent.com/assets/1175286/24824318/18f2ebdc-1bbe-11e7-92aa-daf69c40bc35.png)
+
+## Get the starter code
+### Set up SSH keys on Github
+We recommend adding your SSH keys to Github.
+All of the course computers already have SSH keys.
+Go to your [Github SSH keys settings](https://github.com/settings/keys) and paste the contents of your ~/.ssh/id_rsa.pub into a new SSH key:
+```
+gedit ~/.ssh/id_rsa.pub
+```
+If you are working on your own computer and do not already have SSH keys, generate them with `ssh-keygen`.
+
+### Create a workspace
+We recommend using [Catkin tools](https://catkin-tools.readthedocs.io/en/latest/), which is a replacement for `catkin_make` from the ROS tutorials.
+Catkin tools is already installed on the course computers.
+
+This code will migrate your existing Catkin workspace to use Catkin tools:
+```
+cd ~/catkin_ws
+catkin init
+catkin clean -bdy
+catkin build
+```
+
+### Download the course starter code
+```
+cd ~/catkin_ws/src
+git clone git@github.com:cse481sp17/cse481c.git
+```
