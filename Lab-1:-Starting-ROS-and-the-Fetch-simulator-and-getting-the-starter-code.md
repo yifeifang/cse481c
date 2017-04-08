@@ -44,3 +44,23 @@ catkin build
 cd ~/catkin_ws/src
 git clone git@github.com:cse481sp17/cse481c.git
 ```
+
+Build your workspace:
+```
+catkin build
+```
+
+The build should complete successfully with this message, which appears whenever you build a new package for the first time:
+```
+[build] Note: Workspace packages have changed, please re-source setup files to use them.
+```
+This means that all of your current terminal windows will not be aware of this package (and the package name cannot be tab-completed).
+The .bashrc files on the course computers are configured to re-source setup files, so you can just source your .bashrc:
+```
+source ~/.bashrc
+```
+
+Test that the package built successfully by running:
+```
+rosrun applications hello_world.py
+```
