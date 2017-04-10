@@ -24,14 +24,16 @@ The end point will be the desired torso height, and the desired time to reach th
 As in the previous labs, we have implemented a skeleton of a `Torso` class for you in `fetch_api/src/fetch_api/torso.py`.
 Implement the `set_height` method.
 
-Hints:
+**Hints:**
 * What is the name of the action server to control just the torso?
 * What's the best way to find a message definition? Google. Just search for, e.g., "trajectory_msgs/JointTrajectory" and click on the first result. Be sure, however, to change `kinetic` in the URL to `indigo`, as some message definitions change between ROS versions.
 * The `joint_names` field of a `JointTrajectory` msg is actually a list of strings. To control the torso, you only need to add one item to the list, since you are only controlling one joint.
 * You can find a list of joints in the Fetch docs in the [hardware overview](http://docs.fetchrobotics.com/robot_hardware.html#joint-limits-and-types) section. Which joint corresponds to the torso?
 * If, in a msg definition, you see something like `JointTrajectoryPoint`, that means that `JointTrajectoryPoint` is in the same package as the msg you are looking at (i.e., its full name is `trajectory_msgs/JointTrajectoryPoint`).
-* Notice that JointTrajectoryPoint allows you to specify positions, velocities, accelerations, and efforts. You only need to specify the position in this case.
+* Notice that JointTrajectoryPoint allows you to specify positions, velocities, accelerations, and efforts. You only need to specify a position in this case.
+* The `positions` field of JointTrajectoryPoint is a list of floats. The values of the list correspond to the list of joints. Since we are only controlling one joint, this list only needs to have one value in it.
 * Set the `time_from_start` to 5 seconds. A `duration` type in a ROS msg corresponds to `rospy.Duration` in Python (see the [msg documentation](http://wiki.ros.org/msg#Message_Description_Specification)).
+* As discussed earlier, our "trajectory" only has one JointTrajectoryPoint: the end point.
 
 # Finish the demo
 As in the gripper lab, we have partially implemented a demo file for you.
@@ -39,7 +41,7 @@ However, this time you must import the right module, instantiate the Torso objec
 
 You should now be able to run the following and see the robot's torso move up and down:
 ```
-rosrun applications torso_demo.py 0.3
-rosrun applications torso_demo.py 0
 rosrun applications torso_demo.py 0.1
+rosrun applications torso_demo.py 0.4
+rosrun applications torso_demo.py 0.0
 ```
