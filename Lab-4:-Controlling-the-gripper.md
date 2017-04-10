@@ -7,6 +7,24 @@ Do the actionlib beginner tutorials if you have not already.
 Go to the [Fetch docs](http://docs.fetchrobotics.com/index.html) and click on *API Overview* -> *Gripper Interface*.
 The robot runs an actionlib server to control the gripper, so you will need to write an actionlib client to send open/close commands.
 
+If you look at the [GripperCommand](http://docs.ros.org/api/control_msgs/html/action/GripperCommand.html) action linked from the Fetch docs, you will see that the goal msg has just one field, `command`, which is confusingly of type `GripperCommand`.
+No, this is not a circular definition.
+`GripperCommand` is also the name of a *message* as well as an *action*.
+You can see what a GripperCommand message looks like by clicking on the `control_msgs` link in the GripperCommand action page:
+![image](https://cloud.githubusercontent.com/assets/1175286/24843019/7e718f40-1d53-11e7-9f9b-e48e1caefaa2.png)
+
+From there, you can see a list of all the messages, services, and actions defined in the `control_msgs` package:
+![image](https://cloud.githubusercontent.com/assets/1175286/24843039/9d00c5ca-1d53-11e7-965f-8af6df0e53ae.png)
+
+Note that the name GripperCommand is used twice, once as an action and once as a message.
+
+So to create a goal, your code will look something like this:
+```py
+goal = control_msgs.msg.GripperCommandGoal()
+goal.command.position = CLOSED_POS
+goal.command.effort = max_effort
+```
+
 # Write the action client
 In the course repo, a skeleton of the gripper code has been written for you in `fetch_api/src/fetch_api/gripper.py`.
 Fill in the methods `open` and `close`.
