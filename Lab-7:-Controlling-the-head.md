@@ -96,10 +96,11 @@ Add the following starter code to `fetch_api/src/fetch_api/head.py`:
 ```py
 #!/usr/bin/env python                                                                                  
                                                                                                        
-# TODO: import ?????????                                                                               
-# TODO: import ???????_msgs                                                                            
-# TODO: import ??????????_msgs                                                                         
-import rospy                                                                                           
+# TODO: import ?????????
+# TODO: import ???????_msgs
+# TODO: import ??????????_msgs
+import math
+import rospy
                                                                                                        
 LOOK_AT_ACTION_NAME = ''  # TODO: Get the name of the look-at action                                   
 PAN_TILT_ACTION_NAME = ''  # TODO: Get the name of the pan/tilt action                                 
