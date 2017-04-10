@@ -46,3 +46,5 @@ In these visualizations, red is the x-axis, green is the y-axis, and blue is the
 A simple way to remember this is RGB = XYZ.
 
 # Reading TFs from code
+To read the transform between two frames, follow the TF tutorials on writing a TF listener.
+You will need to know how to do this for later labs.
