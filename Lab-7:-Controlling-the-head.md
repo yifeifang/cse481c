@@ -55,7 +55,7 @@ def main():
         if len(argv) < 6:
             print_usage()
             return
-        fframe_id, x, y, z = argv[2], float(argv[3]), float(argv[4]), float(
+        frame_id, x, y, z = argv[2], float(argv[3]), float(argv[4]), float(
             argv[5])
         rospy.logerr('Not implemented.')
     elif command == 'pan_tilt':
