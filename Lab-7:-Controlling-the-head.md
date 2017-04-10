@@ -55,13 +55,13 @@ def main():
         if len(argv) < 6:                                                       
             print_usage()                                                       
             return                                                              
-        frame_id, x, y, z = argv[2], argv[3], argv[4], argv[5]                  
+        fframe_id, x, y, z = argv[2], float(argv[3]), float(argv[4]), float(argv[5])                 
         rospy.logerr('Not implemented.')                                        
     elif command == 'pan_tilt':                                                 
         if len(argv) < 4:                                                       
             print_usage()                                                       
             return                                                              
-        pan, tilt = argv[2], argv[3]                                            
+        pan, tilt = float(argv[2]), float(argv[3])
         rospy.logerr('Not implemented.')                                        
     else:                                                                       
         print_usage()                                                           
@@ -97,8 +97,8 @@ Add the following starter code to `fetch_api/src/fetch_api/head.py`:
 #!/usr/bin/env python                                                                                  
                                                                                                        
 # TODO: import ?????????
-# TODO: import ???????_msgs
-# TODO: import ??????????_msgs
+# TODO: import ???????_msgs.msg
+# TODO: import ??????????_msgs.msg
 import math
 import rospy
                                                                                                        
@@ -167,6 +167,9 @@ class Head(object):
                                                                                 
         rospy.logerr('Not implemented.')                                               
 ```
+
+**Implementation hints:**
+* It is common to find "Stamped" messages in ROS. This means that the message includes a field of type `std_msgs/Header`. This is where you specify the `frame_id`: in the `header`.
 
 Now, add the `Head` class to the `fetch_api` module by editing `fetch_api/src/fetch_api/__init__.py` and adding the following:
 ```
