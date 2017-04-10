@@ -22,7 +22,7 @@ So to create a goal, your code will look something like this:
 ```py
 goal = control_msgs.msg.GripperCommandGoal()
 goal.command.position = CLOSED_POS
-goal.command.effort = max_effort
+goal.command.max_effort = max_effort
 ```
 
 # Write the action client
