@@ -32,7 +32,7 @@ joints2 = ArmJoints.from_list([1.5, -0.6, 3.0, 1.0, 3.0, 1.0, 3.0])
 
 Once you have an `ArmJoints` object, you can access the names and values in order:
 ```
-joints.names()  # Returns the names of the arm joints.
+ArmJoints.names()  # Returns the names of the arm joints.
 joints.values()  # Returns the joint values stored in the object, in the same order as joints.names()
 ```
 
