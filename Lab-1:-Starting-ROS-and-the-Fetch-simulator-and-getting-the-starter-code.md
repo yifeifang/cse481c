@@ -67,3 +67,18 @@ You should see:
 ```
 /hello_world main:8: Hello world!
 ```
+
+# Save the starter code to your team's repository
+You should have received an invitation to join the CSE 481C Github organization: https://github.com/cse481sp17.
+
+You should keep your code and data backed up to the cloud, since our course computers have had some issues in the past.
+Your team will back up your code to Github as part of the CSE 481C Github organization.
+
+To do this, first change the url of the `origin` remote.
+**Change teamNUMBER** to team1, team2, etc.:
+```
+git remote set-url origin git@github.com:cse481sp17/teamNUMBER.git
+git push -u origin indigo-devel
+```
+
+Do this now.
