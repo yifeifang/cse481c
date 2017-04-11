@@ -8,6 +8,7 @@ Other tips:
 * If you are publishing raw velocity commands, be sure to publish to `cmd_vel` as recommended by the Fetch docs. That way, you can stop the robot at any time by pressing the deadman button (L1) on the joystick.
 * Always keep the robot's emergency stop button facing outward where it can be easily reached.
 * Always supervise the robot when it is operating. Someone should be able to reach the emergency stop button at all times.
+* Hit the software runstop when you are not using the robot. This prevents you or someone else in the class from accidentally running code that moves the real robot.
 
 # Robot etiquette
 There are six teams and one robot, so you must be courteous and try to use the simulator as much as possible.
@@ -65,3 +66,4 @@ Then we will open the gripper and close it with 40N of force.
 1. The gripper should be barely compressing the turtle, but it should also be able to lift it up without dropping it.
 1. `setrobot sim`
 1. Return the joystick to the robot.
+1. Press the runstop button to disable robot movement.
