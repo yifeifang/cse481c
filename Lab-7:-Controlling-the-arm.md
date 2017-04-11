@@ -39,7 +39,7 @@ joints.values()  # Returns the joint values stored in the object, in the same or
 # Implement Arm movement
 We have implemented a demo file for you in `applications/scripts/arm_demo.py`.
 You only need to implement the missing code in `fetch_api/src/fetch_api/arm.py`.
-To be conservative, make your trajectories take 10 seconds each.
+Make your trajectories take 5 seconds each.
 
 # Test in simulation
 **You will need to raise the torso of the robot to its maximum height before running the arm demo.
