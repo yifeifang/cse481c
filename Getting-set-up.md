@@ -52,6 +52,25 @@ You may install TeamViewer, which is remote desktop software that allows you to 
 You can install Ubuntu 14.04 on a virtual machine, such as VirtualBox or VMWare.
 CSE offers free software here: https://www.cs.washington.edu/lab/software
 
+If you are using a VM and are having trouble getting Gazebo to load, try upgrading OpenGL and forcing software rendering:
+```
+sudo apt-get install libgl1-mesa-dri-lts-trusty
+export LIBGL_ALWAYS_SOFTWARE=1
+roslaunch fetch_gazebo playground.launch
+```
+
+At this point, Gazebo will run but it may be quite slow.
+If your computer has a good graphics card, try enabling 3D acceleration in your VM settings and unsetting LIBGL_ALWAYS_SOFTWARE=1:
+
+```
+unset LIBGL_ALWAYS_SOFTWARE
+```
+
+If Gazebo works, then you are good to go! If it only works with LIBGL_ALWAYS_SOFTWARE=1, then add this to your .bashrc:
+```
+export LIBGL_ALWAYS_SOFTWARE=1
+```
+
 ## Dual-boot
 You can install Ubuntu 14.04 on your own computer.
 You can search online for how to do this or ask the course staff for help.
