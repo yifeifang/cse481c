@@ -394,3 +394,18 @@ You will need to add:
 - Commands to move the arm to a pose
 - You can put the real robot in a desired pose and read the joint values using your `joint_state_reader`.
 - Commands to open/close the gripper
+
+# How to grasp an object through teleop
+You have two options: 1) guess and check or 2) record values from the real robot.
+
+To do the guess and check method, open the Fetch simulator and modify the arm demo.
+Try moving one joint at a time until it looks like a good pose to grab stuff with.
+
+To record values from the real robot, move the robot's arm into the desired pose.
+Then run your `joint_state_reader` on the real robot:
+```
+setrobot astro
+rosrun applications joint_reader_demo.py
+setrobot sim
+```
+
