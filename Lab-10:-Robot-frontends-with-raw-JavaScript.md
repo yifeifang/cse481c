@@ -384,7 +384,7 @@ Now, add an image to your `index.html`:
 </div>
 ```
 
-Refresh the page and you should see the following:
+Refresh the page at http://localhost:8080 and you should see the following:
 ![image](https://cloud.githubusercontent.com/assets/1175286/24991988/8407f746-1fd3-11e7-802d-9b17db52fb8d.png)
 
 Hopefully you now have an idea of how to complete the teleop assignment.
