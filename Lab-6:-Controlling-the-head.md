@@ -182,3 +182,7 @@ from .head import Head
 rosrun applications head_demo.py look_at base_link 1 0 0.3
 rosrun applications head_demo.py pan_tilt 0 0
 ```
+
+Positive `x`, `y`, and `z` are forward, left, and up, respectively.
+The `base_link` is in the center of the robot's base, on the ground.
+So x=1, y=0, z=0.3 in `base_link` means 1 meter straight ahead, 30 cm above the ground.
