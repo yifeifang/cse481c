@@ -54,7 +54,7 @@ Note that we are depending on the `fetch_api` and `joint_state_reader` that we i
 
 # Implement the backend
 The rest of this lab will focus on implementing the backend.
-The next two labs present two alternative ways of implementing the frontend.
+The next lab presents one way of implementing the frontend.
 
 Below we show how to implement the backend for each requirement of this sample teleop interface:
 1. Read the torso height
