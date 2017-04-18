@@ -27,7 +27,7 @@ In addition to 3D visualizations, you can add visualizations in separate subwind
 
 Now that you get the idea of what RViz is you are welcome to further explore other display types before moving on to creating customized visualizations in the 3D display.
 
-# Save your RViz configuration
+# Saving and loading RViz configurations
 
 You do not want to manually add all these displays every time you use RViz. Instead you should save your current configuration as the default so RViz looks exactly like you have it at the time of saving. Try closing and reopening RViz to make sure you are able to save and reload RViz configurations. You can also save different configuration files that might be suitable for different tasks, and manually or programatically load them when you need them. 
 
