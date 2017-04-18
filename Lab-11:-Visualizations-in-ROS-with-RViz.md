@@ -1,5 +1,5 @@
 Visualizations of different sensor data and hidden robot states can be extremely helpful in debugging robot software.
-[RViz](http://wiki.ros.org/rviz) is a visualization tool in ROS that allows creating visualization from messages published to certain topics.
+[RViz](http://wiki.ros.org/rviz) is a visualization tool in ROS that allows creating visualizations from published messages of certain types.
 
 # Getting started with RViz
 
