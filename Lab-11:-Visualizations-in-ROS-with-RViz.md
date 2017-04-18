@@ -21,9 +21,9 @@ Start by adding a Grid and a RobotModel. Two new items should appear in the “D
 
 Please note that RViz is not a simulation of the robot, but rather it is a visualization of the robot that is currently simulated in Gazebo. You can use the robot teleoperation tool you developed last week to change the state of the robot in Gazebo and observe that the change is reflected in RViz. If you use `base_link` as the Fixed Frame you might not notice the base movements, whereas if you use `odom` the robot will get displaced from the center of the grid.
 
-Next add a Laser Scan and a Point Cloud(2). Click on the space next to the “Topic” box to reveal the list of potential topics for those visualizations. These are the list of topics that include messages of the type that the RViz displays are designed to visualize. Find the right topics to visualize and configure them so you can differentiate between the two sensor data. You can use the robot teleoperation tool you developed last week to move the robot’s head around and observe how the visualized point cloud changes.
+Next add a Laser Scan and a Point Cloud(2). In the new displays added to the Displays list on the left, click on the space next to the “Topic” box to reveal the list of potential topics for those displays. These are the list of topics that include messages of the type that the RViz displays are designed to visualize. Find the right topics to visualize and configure them so you can differentiate between the two sensor data. You can use the robot teleoperation tool you developed last week to move the robot’s head around and observe how the visualized point cloud changes. You can also interact with the 3D display change the perspective and zoom, to view the sensor data differently.
 
-In addition to 3D visualizations, you can add visualizations in separate subwindows within RViz. For example, try adding an Image or a Camera.
+In addition to 3D visualizations, you can add visualizations in separate subwindows within RViz. For example, try adding an Image or a Camera, with different topics that are available.
 
 Now that you get the idea of what RViz is you are welcome to further explore other display types before moving on to creating customized visualizations in the 3D display.
 
