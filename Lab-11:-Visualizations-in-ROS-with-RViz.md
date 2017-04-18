@@ -22,16 +22,25 @@ In this lab we will visualize things that are anchored to the `base_link` or `od
 
 # Adding Elements to RViz
 
-Next, you will add different visualization elements, called "Displays." Click on the "Add" button and explore the list of different display types offered in the pop-up.
+Next, you will add different visualization elements, called "Displays."
+Click on the "Add" button and explore the list of different display types offered in the pop-up.
 
 **Note:** If the display panel does not update or react to clicks, you may need to resize the Rviz window to have it re-render the UI.
 This is a known issue.
 
-Start by adding a RobotModel. A new item should appear in the "Displays" list and a visualization of the Fetch robot should appear in the 3D display. Expand the display options to explore the different parameters of the Grid and RobotModel displays. While the grid visualization does not depend on any data, the RobotModel display is attached to the `robot_description` topic that involves the current state of the robot.
+Start by adding a RobotModel.
+A new item should appear in the "Displays" list and a visualization of the Fetch robot should appear in the 3D display. 
+Expand the display options to explore the different parameters of the Grid and RobotModel displays.
+While the grid visualization does not depend on any data, the RobotModel display is configured by reading the  `robot_description` param.
 
 Please note that RViz is not a simulation of the robot, but rather it is a visualization of the robot that is currently simulated in Gazebo. You can use the robot teleoperation tool you developed last week to change the state of the robot in Gazebo and observe that the change is reflected in RViz. If you use `base_link` as the Fixed Frame you might not notice the base movements, whereas if you use `odom` the robot will get displaced from the center of the grid.
 
-Next add a LaserScan and a PointCloud2. In the new displays added to the Displays list on the left, click on the space next to the "Topic" box to reveal the list of potential topics for those displays. These are the list of topics that include messages of the type that the RViz displays are designed to visualize. Find the right topics to visualize and configure them so you can differentiate between the two sensor data. You can use the robot teleoperation tool you developed last week to move the robot’s head around and observe how the visualized point cloud changes. You can also interact with the 3D display change the perspective and zoom, to view the sensor data differently.
+Next, add a LaserScan and a PointCloud2.
+In the new displays added to the Displays list on the left, click on the space next to the "Topic" box to reveal the list of potential topics for those displays.
+These are the list of topics that include messages of the type that the RViz displays are designed to visualize.
+Find the right topics to visualize and configure them so you can differentiate between the two sensor data.
+You can use the robot teleoperation tool you developed last week to move the robot’s head around and observe how the visualized point cloud changes.
+You can also interact with the 3D display change the perspective and zoom, to view the sensor data differently.
 
 In addition to 3D visualizations, you can add visualizations in separate subwindows within RViz. For example, try adding an Image or a Camera, with different topics that are available.
 
