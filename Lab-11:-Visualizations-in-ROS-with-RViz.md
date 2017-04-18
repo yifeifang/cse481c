@@ -1,0 +1,36 @@
+Visualizations of different sensor data and hidden robot states can be extremely helpful in debugging robot software.
+[RViz](http://wiki.ros.org/rviz) is a visualization tool in ROS that allows creating visualization from messages published to certain topics.
+
+# Getting started with RViz
+
+Check out the [RViz User Guide](http://wiki.ros.org/rviz/UserGuide) to see everything you can do with RViz. Let’s try a few of its functionalities.
+
+First, fire up the Fetch Gazebo simulator in the “playground” setting. Then open a new terminal and run RViz:
+
+```
+rosrun rviz rviz
+```
+
+An empty RViz window should appear. At this point you should see a “Displays” subwindow on the left that includes only the “Global Options.” The dark gray subwindow on the right is the 3D display. Different visualizations can be aggregated on the 3D display, as long as they have a common or linked frame of reference. In this lab we will visualize things that are anchored to the `base_link` so you should switch the "Fixed Frame" in global options to `base_link`.
+
+# Adding Elements to RViz
+
+Next you will add different visualization elements, called “Displays.” Click on the “Add” button and explore the list of different display types offered in the pop-up.
+
+Start by adding a Grid and a Robot Model.Two new items should appear in the “Displays” list. Expand those to explore all the different parameters of the visualization. While the grid visualization does not depend on any data, the robot model needs to be attached to the right topic that involves the current state of the robot. Click on the space next to the “Topic” box to reveal the list of potential topics for that visualization. This is the list of topics that include messages of the type that the RViz element is designed to visualize. Choose the topic that involves the Fetch robot state. This should bring up a model of the robot in RViz. 
+
+Please note that RViz is not a simulation of the robot, but rather it is a visualization of the robot that is currently simulated in Gazebo. You can use the robot teleoperation tool you developed last week to change the state of the robot in Gazebo and observe that the change is reflected in RViz.
+
+Next add a Laser Scan and a Point Cloud(2). Find the right topics to visualize and configure them so you can differentiate between the two sensor data. You can use the robot teleoperation tool you developed last week to move the robot’s head around and observe how the visualized point cloud changes.
+
+In addition to 3D visualizations, you can add visualizations in separate subwindows within RViz. For example, try adding an Image or a Camera.
+
+Now that you get the idea of what RViz is you are welcome to further explore other display types before moving on to creating customized visualizations in the 3D display.
+
+# Save your RViz configuration
+
+You do not want to manually add all these displays every time you use RViz. Instead you should save your current configuration as the default so RViz looks exactly like you have it at the time of saving. Try closing and reopening RViz to make sure you are able to save and reload RViz configurations. You can also save different configuration files that might be suitable for different tasks, and manually or programatically load them when you need them. 
+
+# RViz with the real robot
+
+RViz can similarly be used to visualize the current state of the real physical robot and its sensor data. To try it, open a new window, use the command `setrobot astro` to start communication with the real robot and run RViz.
