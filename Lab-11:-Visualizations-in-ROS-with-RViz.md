@@ -51,6 +51,8 @@ If you see the point cloud but it is while, you may need to change the "Color Tr
 You can use the robot teleoperation tool you developed last week to move the robot’s head around and observe how the visualized point cloud changes.
 You can also interact with the 3D display change the perspective and zoom, to view the sensor data differently.
 
+![image](https://cloud.githubusercontent.com/assets/1175286/25156187/df2d5fa2-244d-11e7-8910-0bc2cae8e43f.png)
+
 In addition to 3D visualizations, you can add visualizations in separate subwindows within RViz. For example, try adding an Image or a Camera, with different topics that are available.
 
 Now that you get the idea of what RViz is you are welcome to further explore other display types before moving on to creating customized visualizations in the 3D display.
