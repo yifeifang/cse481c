@@ -65,3 +65,8 @@ server.applyChanges()
 ```
 
 To test the interaction with your InteractiveMarker run your script and run RViz. In RViz you will need to add an InteractiveMarker display and choose the topic to which your server will publish its InteractiveMarker. Now you are all set to test the interaction.
+
+# Triggering Continued Robot Actions though InteractiveMarkers
+
+Different controls for InteractiveMarkers allow obtaining different types of input through RViz. Before going into other types of controls we would like to further explore how to handle simple click inputs and how handling of events can impact the architecture of your code. To that end you will extend your script to publish three different InteractiveMarkers at different locations in the room. Clicking on an interactive marker should trigger the robot to move towards that InteractiveMarker. You can make the robot move towards a known location by servoing, i.e. by moving a little towards it at every step of your loop until you are close enough. During servoing, the keyboard controls should be disabled. If another marker is clicked during servoing, the robot should change course and start servoing towards the newly clicked InteractiveMarker.
+
