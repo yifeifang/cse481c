@@ -11,13 +11,13 @@ First, fire up the Fetch Gazebo simulator in the “playground” setting. Then 
 rosrun rviz rviz
 ```
 
-An empty RViz window should appear. At this point you should see a “Displays” subwindow on the left that includes only the “Global Options.” The dark gray subwindow on the right is the 3D display. Different visualizations can be aggregated on the 3D display, as long as they have a common or linked frame of reference. In this lab we will visualize things that are anchored to the `base_link` so you should switch the "Fixed Frame" in global options to `base_link` or `odom`.
+An empty RViz window should appear. At this point you should see a “Displays” subwindow on the left that includes only the “Global Options,” "Global Status," and a "Grid" display. The dark gray subwindow in the middle is the 3D display. Different visualizations can be aggregated on the 3D display, as long as they have a common or linked frame of reference. You can ignore the rest of the RViz window for now. In this lab we will visualize things that are anchored to the `base_link` or `odom` so you should switch the "Fixed Frame" in global options to either of those.
 
 # Adding Elements to RViz
 
 Next you will add different visualization elements, called “Displays.” Click on the “Add” button and explore the list of different display types offered in the pop-up.
 
-Start by adding a Grid and a RobotModel. Two new items should appear in the “Displays” list. Expand those to explore all the different parameters of the visualization. While the grid visualization does not depend on any data, the RobotModel display is attached to the `robot_description` topic that involves the current state of the robot.
+Start by adding a RobotModel. A new item should appear in the “Displays” list and a visualization of the Fetch robot should appear in the 3D display. Expand the display options to explore the different parameters of the Grid and RobotModel displays. While the grid visualization does not depend on any data, the RobotModel display is attached to the `robot_description` topic that involves the current state of the robot.
 
 Please note that RViz is not a simulation of the robot, but rather it is a visualization of the robot that is currently simulated in Gazebo. You can use the robot teleoperation tool you developed last week to change the state of the robot in Gazebo and observe that the change is reflected in RViz. If you use `base_link` as the Fixed Frame you might not notice the base movements, whereas if you use `odom` the robot will get displaced from the center of the grid.
 
