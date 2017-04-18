@@ -59,8 +59,29 @@ Now that you get the idea of what RViz is you are welcome to further explore oth
 
 # Saving and loading RViz configurations
 
-You do not want to manually add all these displays every time you use RViz. Instead you should save your current configuration as the default so RViz looks exactly like you have it at the time of saving. Try closing and reopening RViz to make sure you are able to save and reload RViz configurations. You can also save different configuration files that might be suitable for different tasks, and manually or programatically load them when you need them. 
+You do not want to manually add all these displays every time you use RViz.
+Instead, you should save your current configuration.
+To save your current configuration as the default (in ~/.rviz/default.rviz), just go to `File->Save Config` or press Ctrl+S.
+Try saving and reloading RViz and make sure that your configuration comes up as expected.
+
+Later, you will want different RViz configurations for different purposes.
+You can save your current configuration to a separate .rviz file and switch between different configurations.
+To do so, go to `File->Save Config As`.
+Your config file will be saved in `~/.rviz/myconfig.rviz`.
+Later, you can load this config file by going to `File->Open Config`.
+
+You also may want to run RViz with a certain config from the command line or from a launch file.
+To open RViz with a particular config file, run:
+```
+rosrun rviz rviz -d ~/.rviz/myconfig.rviz
+```
+
+To open RViz from a launch file with a particular config file, add this to your launch file:
+```xml
+<node pkg="rviz" type="rviz" name="$(anon rviz)" args="-d ~/.rviz/myconfig.rviz" />
+```
 
 # RViz with the real robot
 
-RViz can similarly be used to visualize the current state of the real physical robot and its sensor data. To try it, open a new window, use the command `setrobot astro` to start communication with the real robot and run RViz.
+RViz can similarly be used to visualize the current state of the real physical robot and its sensor data.
+To try it, open a new window, use the command `setrobot astro` to start communication with the real robot and run RViz in the same terminal.
