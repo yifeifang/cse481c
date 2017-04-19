@@ -29,3 +29,9 @@ This can be accomplished using variants on A* planning.
 The Fetch robot also supports "keep out" zones, which specify to the planner that the robot should not go there.
 However, the "keep out" map must be separate from the map that is used for localization.
 The common ROS navigation stack package for doing planning and obstacle avoidance is [move_base](http://wiki.ros.org/move_base).
+
+For Fetch navigation in particular, you can refer to the [Fetch docs navigation tutorial](http://docs.fetchrobotics.com/navigation.html).
+
+# Building a map
+
+# Sending navigation goals in RViz
