@@ -91,8 +91,33 @@ Note that some fields are shared between all types of markers, while other field
 
 # Visualizing the robot path with Markers
 
-Next you will modify your script to publish a Marker that visualizes the path taken by the robot. To do that you will need to know where the robot is at any given time. To that end, use ROS command line tools to explore the data in the `/odom` or `/odom_combined` topics. You will need to extend your script to subscribe to these messages and update parameters of the path visualization based on the messages received on this topic.
+Next, create a script to publish a Marker that visualizes the path taken by the robot.
+To do that you will need to know where the robot is at any given time.
+To that end, use ROS command line tools to explore the data in the `/odom` or `/odom_combined` topics.
+You will need to extend your script to subscribe to these messages and update parameters of the path visualization based on the messages received on this topic.
 
-To visualize the path you can use `Marker.LINE_STRIP` or `Marker.SPHERE_LIST` type markers. Rather than adding points to the path with a constant frequency, try adding points only when the robot is displaced by a certain amount from its previous pose. 
+To visualize the path you can use `Marker.LINE_STRIP` or `Marker.SPHERE_LIST` type markers.
+Rather than adding points to the path with a constant frequency, try adding points only when the robot is displaced by a certain amount from its previous pose. 
 
-When you are done modifying your script you should be able to move the robot around with the the keyboard teleoperation and observe the trace that it leaves behind.
+When you are done modifying your script, you should be able to move the robot around with the the keyboard teleoperation and observe the trace that it leaves behind.
+
+Hints:
+- You can get the current location of the robot from the `/odom` topic.
+- You will need to keep track of where you last rendered a point on your path. If you are using the `LINE_STRIP` marker, then you will want to keep around a list of points that the robot has visited. Either way, you will need to store some state and use it with your subscriber callback. The best way to do this is with a class. You can make a subscriber call a class method as follows:
+
+```py
+class NavPath(object):
+    def __init__(self):
+        self._path = []
+            
+    def callback(self, msg):
+        rospy.loginfo(msg)
+        if SOME_CONDITION:
+            self._path.append(msg.foo.bar)
+
+def main():
+    # ...setup stuff...
+    nav_path = NavPath()
+    rospy.Subscriber('odom', Odometry, nav_path.callback)
+    rospy.spin()
+```
