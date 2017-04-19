@@ -155,3 +155,12 @@ Instead, we will use the [two-argument arctangent](https://en.wikipedia.org/wiki
 ```
 
 At this point, you will probably want to write a utility function called `quaternion_to_yaw(q)` that automates the above process.
+
+# Computing desired yaw
+A simple way to navigate to a desired location is to rotate towards the location, then drive straight.
+This assumes that there are no obstacles in the way.
+
+Computing the angle you need to turn is straightforward:
+1. Given the desired location and the current location of the robot, compute the vector offset between them.
+1. Once again, use `math.atan2` to get the angle the robot should be pointing.
+1. Finally, subtract the desired angle from the robot's current angle. This is how much to rotate.
