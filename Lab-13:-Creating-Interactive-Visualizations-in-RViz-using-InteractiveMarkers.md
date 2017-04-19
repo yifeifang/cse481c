@@ -104,6 +104,7 @@ This lab demonstrates the use of a very simple interactive marker.
 However, there are many more things you can do.
 
 **Things to try:**
+You do not need to implement these, but look at the available documentation and think about these questions:
 - Look at Robot Web Tools's [online demo of interactive markers](http://robotwebtools.org/demos/im.html)
 - Look at the Code API. How do you erase a marker from the server?
 - How do you add a right-click menu to a marker?
@@ -111,7 +112,12 @@ However, there are many more things you can do.
 
 # Triggering Continued Robot Actions though InteractiveMarkers
 
-Different controls for InteractiveMarkers allow obtaining different types of input through RViz. Before going into other types of controls we would like to further explore how to handle simple click inputs and how handling of events can impact the architecture of your code. 
+Different controls for InteractiveMarkers allow obtaining different types of input through RViz.
+Before going into other types of controls we would like to further explore how to handle simple click inputs and how handling of events can impact the architecture of your code.
 
-To that end you will extend your script to publish three different InteractiveMarkers at different locations in the room. Clicking on an interactive marker should trigger the robot to move towards that InteractiveMarker. You can make the robot move towards a known location by first rotating towards the target and then moving on a straight line towards it until you are close enough. During this process, the keyboard controls should be disabled. If another marker is clicked while the robot is moving, it should change course and start moving towards the newly clicked InteractiveMarker.
+To that end, you will extend your script to publish three different InteractiveMarkers at different locations in the room. Clicking on an interactive marker should trigger the robot to move towards that InteractiveMarker.
+You can make the robot move towards a known location by first rotating towards the target and then moving on a straight line towards it until you are close enough.
+If another marker is clicked while the robot is moving, it should change course and start moving towards the newly clicked InteractiveMarker.
 
+Based on this lab, you should be able to implement the interactive marker display and handling of clicks.
+To accomplish the driving portion, please see the next lab, [[Lab 14: Driving with odometry]].
