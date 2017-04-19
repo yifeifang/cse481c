@@ -6,6 +6,8 @@ A list of labs for the class is below.
 - [[Lab 11: Visualizations in ROS with RViz]]
 - [[Lab 12: Creating Custom Visualizations in RViz using Markers]]
 - [[Lab 13: Creating Interactive Visualizations in RViz using InteractiveMarkers]]
+- [[Lab 14: Odometry and rotations]]
+- [[Lab 15: Driving with odometry]]
 
 ### Thursday
 
