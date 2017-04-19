@@ -101,7 +101,6 @@ The 4th row and column are both `0, 0, 0, 1`.
 >>> import numpy as np
 >>> help(tft) # Use this to look up documentation.
 >>> mat = tft.quaternion_matrix([0, 0, 0, 1])
->>> mat
 array([[ 1.,  0.,  0.,  0.],
        [ 0.,  1.,  0.,  0.],
        [ 0.,  0.,  1.,  0.],
@@ -125,4 +124,34 @@ array([ 0.        ,  0.        ,  0.25882081,  0.96591925])
 # What's my yaw?
 Knowing about 3D rotations is great for perception and manipulation.
 However, for navigation purposes you can assume that the robot will stay upright on the ground, and that it will only rotate about the Z-axis.
+As a result, the only rotation parameter that matters to you for navigation is Θ, the rotation about the Z-axis.
+According to the [ROS coordinate conventions](http://www.ros.org/reps/rep-0103.html), positive Θ is counter-clockwise.
+To remember this, use the right-hand rule: point your thumb in the positive direction of the axis, and your fingers will curl in the positive direction of rotation.
 
+To get Θ, first convert your quaternion into a rotation matrix form:
+```py
+>>> q = Quaternion(x=0, y=0, z=-0.922528078753, w=-0.385929972809)
+>>> m = tft.quaternion_matrix([q.x, q.y, q.z, q.x])
+array([[-0.70211611, -0.71206247, -0.        ,  0.        ],
+       [ 0.71206247, -0.70211611,  0.        ,  0.        ],
+       [ 0.        , -0.        ,  1.        ,  0.        ],
+       [ 0.        ,  0.        ,  0.        ,  1.        ]])
+```
+
+To find Θ, all we need to do is figure out the rotation of the X-axis.
+We know that `Θ = atan(y/x)`, but this can be problematic when `x` is 0 or close to 0.
+Instead, we will use the [two-argument arctangent](https://en.wikipedia.org/wiki/Atan2) function:
+
+```py
+>>> import math
+>>> x = m[0, 0] # The x value of the x-axis (first column)
+-0.70211611
+>>> y = m[1, 0] # The y value of the x-axis
+0.71206247
+>>> theta_rads = math.atan2(y, x)
+2.349161293235385
+>>> theta_degs = theta_rads * 180 / math.pi
+134.5877860762304
+```
+
+At this point, you will probably want to write a utility function called `quaternion_to_yaw(q)` that automates the above process.
