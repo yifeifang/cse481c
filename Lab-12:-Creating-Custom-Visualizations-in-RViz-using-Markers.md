@@ -77,6 +77,7 @@ show_text_in_rviz(marker_publisher, 'Hello world!')
 ```
 
 Now run the script, and you should see some green text appear in front of the robot and disappear 1.5 seconds later.
+![image](https://cloud.githubusercontent.com/assets/1175286/25159015/7f0c662c-2461-11e7-9602-c5bb754ab600.png)
 
 Next, try modifying the different parameters of the Marker message, re-run the script, and observe the effects on the visualization.
 Try to change the following:
