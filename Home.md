@@ -10,6 +10,9 @@ A list of labs for the class is below.
 - [[Lab 15: Driving with odometry]]
 
 ### Thursday
+- [[Lab 16: Mapping and navigation]]
+- [[Lab 17: Sending navigation goals]]
+- [[Lab 18: Map annotation with a hybrid web/RViz interface]]
 
 ## Week 3
 ### Tuesday
