@@ -1,10 +1,39 @@
-In this lab you will create custom visualizations in the RViz 3D display. This is done with the help of [Markers](http://wiki.ros.org/rviz/DisplayTypes/Marker), which are a special type of 3D display you might have noticed in the previous lab. The Markers display allows programmatic addition of various primitive shapes to the RViz 3D view by sending a `visualization_msgs/Marker` or `visualization_msgs/MarkerArray` message.
+In this lab, you will create custom visualizations in the RViz 3D display.
+This is done with the help of [Markers](http://wiki.ros.org/rviz/DisplayTypes/Marker), which are a special type of 3D display you might have noticed in the previous lab.
+The Markers display allows programmatic addition of various primitive shapes to the RViz 3D view by sending a `visualization_msgs/Marker` or `visualization_msgs/MarkerArray` message.
+
+# Add a marker display to RViz
+Add a "Marker" display to RViz.
+Note that it subscribes to the `/visualization_marker` topic by default.
 
 # Publishing a Marker
 
-Let's start by modifying the `keyboard_teleop.py` script from last week to publish a Marker. Make a copy of this script and rename it `keyboard_teleop_viz.py`. Here is what you will need to import into your script:
+Let's create a new demo file for publishing markers in `applications/scripts/marker_demo.py`.
 
+You should know how to create executable Python nodes on your own by now.
+Here is a basic outline of what you need:
+```py
+#!/usr/bin/env python
+
+import rospy
+
+def wait_for_time():                                              
+    """Wait for simulated time to begin.                          
+    """                                                           
+    while rospy.Time().now().to_sec() == 0:                       
+        pass
+
+def main():
+  rospy.init_node('my_node')
+  wait_for_time()
+
+if __name__ == '__main__':
+  main()
 ```
+Refer to other demos if you get stuck.
+
+Here is what you will need to import into your script:
+```py
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Quaternion, Pose, Point, Vector3
 from std_msgs.msg import Header, ColorRGBA
@@ -12,7 +41,7 @@ from std_msgs.msg import Header, ColorRGBA
 
 Next you will need to create a publisher for `Marker` type messages in your main function, before going into the infinite loop.
 
-```
+```py
 marker_publisher = rospy.Publisher('visualization_marker', Marker)
 ```
 
@@ -20,8 +49,8 @@ Before moving on, it would be a good idea to check what the Marker message invol
 
 Here is a function you can add to your script for publishing a `Marker` of type `Marker.TEXT_VIEW_FACING` which will include the `text` argument passed to the function.
 
-```
-def show_text_in_rviz(text):
+```py
+def show_text_in_rviz(marker_publisher, text):
     marker = Marker(
                 type=Marker.TEXT_VIEW_FACING,
                 id=0,
@@ -34,9 +63,30 @@ def show_text_in_rviz(text):
     marker_publisher.publish(marker)
 ```
 
-First, try adding a call to this function from your while loop. Run the script and run RViz simultaneously. Within RViz add a Marker display and specify its topic as `visualization_marker`. You should now see the text in RViz.
+Notice that when you call this function from your main function, the marker does not show up in RViz.
+One way to debug whether this is an issue with our ROS code or with the visualization itself is to see if the message gets published.
+To do this, run `rostopic echo /visualization_marker` and try running your script again.
+You should observe that no messages are published on this topic, even though your code *does* publish to this topic!
 
-Next try modifying the different parameters of the Marker message, re-run the script, and observe the effects on the visualization. You can also experiment with [different types of Markers](http://wiki.ros.org/rviz/DisplayTypes/Marker). Finally try publishing the Marker only once, before entering the infinite loop and observe the effect of the `lifetime` parameter. 
+The reason for this is that after you advertise a publisher in your code, you need to wait a little bit for the ROS master to notify other nodes and for those nodes to start subscribing to you.
+All of this happens in the background, so you should just wait for a half second or so:
+```py
+marker_publisher = rospy.Publisher('visualization_marker', Marker, queue_size=5)
+rospy.sleep(0.5)                                                             
+show_text_in_rviz(marker_publisher, 'Hello world!')
+```
+
+Now run the script, and you should see some green text appear in front of the robot and disappear 1.5 seconds later.
+
+Next, try modifying the different parameters of the Marker message, re-run the script, and observe the effects on the visualization.
+Try to change the following:
+- The color
+- The size of the text
+- The location of the text
+- The lifetime before the text disappears (including an infinite lifetime)
+
+**Note:** [rviz/DisplayTypes/Marker](http://wiki.ros.org/rviz/DisplayTypes/Marker) is the best reference for how to fill out a marker message.
+Note that some fields are shared between all types of markers, while other fields are used in different ways depending on the marker type.
 
 # Visualizing the robot path with Markers
 
