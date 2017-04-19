@@ -129,3 +129,74 @@ if __name__ == '__main__':
 From Lab 13:
 
 To that end, you will extend your script to publish three different InteractiveMarkers at different locations in the room. Clicking on an interactive marker should trigger the robot to move towards that InteractiveMarker. You can make the robot move towards a known location by first rotating towards the target and then moving on a straight line towards it until you are close enough. If another marker is clicked while the robot is moving, it should change course and start moving towards the newly clicked InteractiveMarker.
+
+**Hints:**
+- You will not use `base.go_forward` or `base.turn` directly. Instead, you will merge its internal while loop with an overarching while loop. Hopefully, `go_forward` and `turn` will be useful to you in your actual projects.
+- The logic for this task can be a bit complex, here is a suggested outline:
+
+```py
+class Driver(object)
+    def __init__(self, base):
+         self.goal = None
+         self._base = base
+
+    def start():
+        state = 'turn'
+        goal = None
+        while True:
+            # Check if someone changed self.goal from outside
+            if goal != self.goal:
+                goal = copy.deepcopy(self.goal)
+                # TODO: restart the turn/move sequence
+                desired_distance = ??? # Set this to how far the robot should move once pointed in the right direction
+
+            if state == 'turn':
+                # TODO: Compute how much we need to turn to face the goal
+                if STILL_NEED_TO_TURN:
+                    self._base.move(0, DIRECTION * ANGULAR_SPEED)
+                else:
+                    state = 'move'
+
+            if state == 'move':
+                # TODO: Compute how far we have moved and compare that to desired_distance
+                # Make sure that the robot has the ability to drive backwards if it overshoots
+                if STILL_NEED_TO_MOVE:
+                    # TODO: possibly adjust speed to slow down when close to the goal
+                    self._base.move(DIRECTION * SPEED, 0)
+
+            rospy.sleep(0.1)
+```
+
+We also recommend wrapping the interactive markers in a class, like so:
+```py
+server = InteractiveMarkerServer('simple_marker')
+marker1 = DestinationMarker(server, 2, 2, 'dest1', driver)
+marker2 = DestinationMarker(server, 1, 0, 'dest2', driver)
+marker3 = DestinationMarker(server, 3, -1, 'dest3', driver)
+```
+
+As usual, you can assign a class method as a callback:
+```py
+class DestinationMarker(object):
+    def __init__(self, server, x, y, name, driver):
+        # ... Initialization, marker creation, etc. ...
+        self._server.insert(int_marker, self._callback)
+        self._server.applyChanges()
+
+    def _callback(self, feedback_msg):
+        ...
+```
+
+The markers can change the goal of the driver like so:
+```py
+class DestinationMarker(object):
+    # ... __init__ and other methods...
+
+    def _callback(self, msg):
+         # TODO: How do you get the interactive marker given msg.marker_name?
+         # See the InteractiveMarkerServer documentation
+         interactive_marker = ???
+         position = interactive_marker.pose.position
+         rospy.loginfo('User clicked {} at {}, {}, {}'.format(msg.marker_name, position.x, position.y, position.z))
+         self._driver.goal = new_position # Updates the Driver's goal.
+```
