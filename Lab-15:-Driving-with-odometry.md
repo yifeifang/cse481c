@@ -79,6 +79,52 @@ def turn(self, angular_distance, speed=0.5):
         rate.sleep()
 ```
 
+# Test your odometry controllers
+You can use this demo, which you should place in `applications/scripts/base_demo.py`:
+
+```py
+#! /usr/bin/env python
+
+import math
+import fetch_api
+import rospy
+
+
+def wait_for_time():                                                                          
+    """Wait for simulated time to begin.
+    """                                                                                       
+    while rospy.Time().now().to_sec() == 0:                                                   
+        pass
+
+
+def print_usage():                                                                            
+    print 'Usage: rosrun applications base_demo.py move 0.1'                                  
+    print '       rosrun applications base_demo.py rotate 30'                                 
+        
+        
+def main():
+    rospy.init_node('arm_demo')
+    wait_for_time()
+    argv = rospy.myargv()
+    if len(argv) < 3:
+        print_usage() 
+        return
+    command = argv[1]
+    value = float(argv[2])                                                                    
+    
+    base = fetch_api.Base()
+    if command == 'move':                                                                     
+        base.go_forward(value)
+    elif command == 'rotate':                                                                 
+        base.turn(value * math.pi / 180)                                                      
+    else:
+        print_usage()
+
+
+if __name__ == '__main__':
+    main()
+```
+
 # Create a demo that drives to locations on the map
 From Lab 13:
 
