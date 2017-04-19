@@ -121,3 +121,5 @@ def main():
     rospy.Subscriber('odom', Odometry, nav_path.callback)
     rospy.spin()
 ```
+
+Note that you need to add `rospy.spin()` to the end of your `main` function because this node needs to run forever to monitor the `/odom` topic.
