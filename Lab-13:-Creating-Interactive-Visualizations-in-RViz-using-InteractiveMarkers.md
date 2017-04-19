@@ -35,7 +35,9 @@ First, be sure to import the following.
 
 ```py
 from interactive_markers.interactive_marker_server import InteractiveMarkerServer
-from visualization_msgs.msg import InteractiveMarker, InteractiveMarker, Marker
+from visualization_msgs.msg import InteractiveMarker, InteractiveMarkerControl, InteractiveMarkerFeedback
+from visualization_msgs.msg import Marker
+# ... Other imports ...
 ```
 
 First, create the server.
@@ -51,10 +53,12 @@ int_marker.name = "my_marker"
 int_marker.description = "Simple Click Control"
 ```
 
-Next, create a grey cube `Marker` for the `InteractiveMarker`.
+Next, create a teal cube `Marker` for the `InteractiveMarker`.
 ```py
 box_marker = Marker()
 box_marker.type = Marker.CUBE
+box_marker.pose.position.x = 1
+box_marker.pose.orientation.w = 1
 box_marker.scale.x = 0.45
 box_marker.scale.y = 0.45
 box_marker.scale.z = 0.45
@@ -66,7 +70,7 @@ box_marker.color.a = 1.0
 
 Next create an `InteractiveMarkerControl`, add the `Marker` to it, and add the control to the `InteractiveMarker`.
 
-```
+```py
 button_control = InteractiveMarkerControl()
 button_control.interaction_mode = InteractiveMarkerControl.BUTTON
 button_control.always_visible = True
@@ -92,8 +96,8 @@ server.applyChanges()
 ```
 
 To test the interaction with your InteractiveMarker, run your script alongside RViz.
-In RViz, add an InteractiveMarker display and choose the topic (`simple_marker`).
-Now you are all set to test the interaction.
+In RViz, add an InteractiveMarker display and choose the topic (`/simple_marker/update`).
+When you click on the box, you should see output in the console.
 
 # Triggering Continued Robot Actions though InteractiveMarkers
 
