@@ -99,6 +99,8 @@ To test the interaction with your InteractiveMarker, run your script alongside R
 In RViz, add an InteractiveMarker display and choose the topic (`/simple_marker/update`).
 When you click on the box, you should see output in the console.
 
+![image](https://cloud.githubusercontent.com/assets/1175286/25161306/0acf71fa-2470-11e7-9202-51a51088b664.png)
+
 # Other things you can do with Interactive Markers
 This lab demonstrates the use of a very simple interactive marker.
 However, there are many more things you can do.
