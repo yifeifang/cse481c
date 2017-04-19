@@ -99,6 +99,15 @@ To test the interaction with your InteractiveMarker, run your script alongside R
 In RViz, add an InteractiveMarker display and choose the topic (`/simple_marker/update`).
 When you click on the box, you should see output in the console.
 
+# Other things you can do with Interactive Markers
+This lab demonstrates the use of a very simple interactive marker.
+However, there are many more things you can do.
+
+**Things to try:**
+- Look at Robot Web Tools's [online demo of interactive markers](http://robotwebtools.org/demos/im.html)
+- Look at the Code API. How do you erase a marker from the server?
+- How do you add a right-click menu to a marker?
+
 # Triggering Continued Robot Actions though InteractiveMarkers
 
 Different controls for InteractiveMarkers allow obtaining different types of input through RViz. Before going into other types of controls we would like to further explore how to handle simple click inputs and how handling of events can impact the architecture of your code. 
