@@ -123,3 +123,9 @@ def main():
 ```
 
 Note that you need to add `rospy.spin()` to the end of your `main` function because this node needs to run forever to monitor the `/odom` topic.
+
+An example using the `SPHERE_LIST` marker type:
+![image](https://cloud.githubusercontent.com/assets/1175286/25159798/02bbb46e-2467-11e7-9be3-0ca0c600978d.png)
+
+An example using the `LINE_STRIP` marker type:
+![image](https://cloud.githubusercontent.com/assets/1175286/25159872/7ae4b2f6-2467-11e7-8c28-25396779737b.png)
