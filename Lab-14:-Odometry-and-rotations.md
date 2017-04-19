@@ -92,10 +92,37 @@ In this module, quaternions are represented as vectors of the form `[x, y, z, w]
 Matrices are represented as a 4x4 numpy arrays.
 If you are not familiar with numpy, look up some tutorials, such as this [quickstart guide](https://docs.scipy.org/doc/numpy-dev/user/quickstart.html).
 
-```
-import tf.transformations as tft
-help(tft) # Use this to look up documentation.
-q = Quaternion(w=1, x=0, y=0, z=0)
-tft.quaternion_matrix(
+`tf.transformations` uses 4x4 *homogeneous transform matrices*, which is a generalization of 3x3 *rotation matrices*.
+In a homogeneous transform matrix, the rotation matrix is embedded in the upper left corner.
+The 4th row and column are both `0, 0, 0, 1`.
 
+```py
+>>> import tf.transformations as tft
+>>> import numpy as np
+>>> help(tft) # Use this to look up documentation.
+>>> mat = tft.quaternion_matrix([0, 0, 0, 1])
+>>> mat
+array([[ 1.,  0.,  0.,  0.],
+       [ 0.,  1.,  0.,  0.],
+       [ 0.,  0.,  1.,  0.],
+       [ 0.,  0.,  0.,  1.]])
+>>> mat[:3, :3]
+array([[ 1.,  0.,  0.],
+       [ 0.,  1.,  0.],
+       [ 0.,  0.,  1.]])
+>>> tft.quaternion_from_matrix(mat)
+array([ 0.,  0.,  0.,  1.])
+>>> mat2 = np.array([[0.866, -0.5,   0, 0],
+                     [0.5,    0.866, 0, 0],
+                     [0,      0,     1, 0],
+                     [0,      0,     0, 1]])
+>>> tft.quaternion_from_matrix(mat2)
+array([ 0.        ,  0.        ,  0.25882081,  0.96591925])
+>>> from geometry_msgs.msg import Quaternion
+>>> yaw_by_30 = Quaternion(x=0, y=0, z=0.25882081, w=0.96591925)
 ```
+
+# What's my yaw?
+Knowing about 3D rotations is great for perception and manipulation.
+However, for navigation purposes you can assume that the robot will stay upright on the ground, and that it will only rotate about the Z-axis.
+
