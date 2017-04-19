@@ -122,4 +122,4 @@ You can make the robot move towards a known location by first rotating towards t
 If another marker is clicked while the robot is moving, it should change course and start moving towards the newly clicked InteractiveMarker.
 
 Based on this lab, you should be able to implement the interactive marker display and handling of clicks.
-To accomplish the driving portion, please see the next lab, [[Lab 14: Driving with odometry]].
+To accomplish the driving portion, please see the next two labs, [[Lab 14: Odometry and rotations]] and [[Lab 15: Driving with odometry]].
