@@ -78,3 +78,8 @@ def turn(self, angular_distance, speed=0.5):
         self.move(0, direction * speed)
         rate.sleep()
 ```
+
+# Create a demo that drives to locations on the map
+From Lab 13:
+
+To that end, you will extend your script to publish three different InteractiveMarkers at different locations in the room. Clicking on an interactive marker should trigger the robot to move towards that InteractiveMarker. You can make the robot move towards a known location by first rotating towards the target and then moving on a straight line towards it until you are close enough. If another marker is clicked while the robot is moving, it should change course and start moving towards the newly clicked InteractiveMarker.
