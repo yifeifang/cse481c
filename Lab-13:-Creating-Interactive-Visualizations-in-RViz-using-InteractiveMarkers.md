@@ -51,13 +51,14 @@ int_marker = InteractiveMarker()
 int_marker.header.frame_id = "base_link"
 int_marker.name = "my_marker"
 int_marker.description = "Simple Click Control"
+int_marker.pose.position.x = 1
+int_marker.pose.orientation.w = 1
 ```
 
 Next, create a teal cube `Marker` for the `InteractiveMarker`.
 ```py
 box_marker = Marker()
 box_marker.type = Marker.CUBE
-box_marker.pose.position.x = 1
 box_marker.pose.orientation.w = 1
 box_marker.scale.x = 0.45
 box_marker.scale.y = 0.45
