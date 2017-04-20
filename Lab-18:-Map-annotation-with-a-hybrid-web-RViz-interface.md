@@ -107,6 +107,8 @@ The user should be able to change the marker's position and orientation.
 As the pose of the marker is changed, the database (or whatever data structure you are using to store the poses) should be updated.
 And, if a pose is deleted from the web interface, the marker for that pose should disappear from RViz as well.
 
+Don't forget to add an InteractiveMarker display to RViz.
+
 **Hint:**
 Look at the *Chess Piece* marker in the [Interactive Markers Basic Controls tutorial](http://wiki.ros.org/rviz/Tutorials/Interactive%20Markers%3A%20Basic%20Controls) to get an idea of how to create a marker that can be dragged in the XY plane.
 To get it to rotate, you will need to add another control to the interactive marker, see the [InteractiveMarkerControl definition](http://docs.ros.org/indigo/api/visualization_msgs/html/msg/InteractiveMarkerControl.html) and figure out what that is.
