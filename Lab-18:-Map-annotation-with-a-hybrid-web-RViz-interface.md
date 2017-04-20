@@ -53,7 +53,7 @@ roslaunch rosbridge_server rosbridge_websocket.launch
 
 # Frontend template
 Creating websites with raw Javascript is non-trivial, so we are providing a template for the web frontend again.
-You can find it in `cse481c/map_annotator/frontend`.
+You can find it in [cse481c/map_annotator/frontend](https://github.com/cse481sp17/cse481c/tree/indigo-devel/map_annotator/frontend) of the course repo.
 Copy the `frontend` folder into your own `map_annotator` package.
 Once you have it, you should be able to test it out:
 ```
