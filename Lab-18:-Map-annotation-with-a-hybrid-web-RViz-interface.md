@@ -108,7 +108,9 @@ As the pose of the marker is changed, the database (or whatever data structure y
 And, if a pose is deleted from the web interface, the marker for that pose should disappear from RViz as well.
 
 **Hint:**
-Look at the *Chess Piece* marker in the [Interactive Markers Basic Controls tutorial](http://wiki.ros.org/rviz/Tutorials/Interactive%20Markers%3A%20Basic%20Controls) to get an idea of how to create a marker that can be dragged and rotated in the XY plane.
+Look at the *Chess Piece* marker in the [Interactive Markers Basic Controls tutorial](http://wiki.ros.org/rviz/Tutorials/Interactive%20Markers%3A%20Basic%20Controls) to get an idea of how to create a marker that can be dragged in the XY plane.
+To get it to rotate, you will need to make a slight modification, see the [InteractiveMarkerControl definition](http://docs.ros.org/indigo/api/visualization_msgs/html/msg/InteractiveMarkerControl.html) and figure out what that is.
+Note that the *Chess Piece* documentation incorrectly states that the code they provide will add an orientation ring around the marker.
 
 # Testing with multiple browsers
 Once your tool is working, you should be able to load the webpage from your phone by visiting `COMPUTERNAME:8080/` in a web browser, where `COMPUTERNAME` is the name of your lab computer.
