@@ -261,3 +261,5 @@ A few things to notice:
 
 The global plan and costmap relate to how the robot sees the world just from the map data.
 The local plan and costmap incorporate dynamic factors, such as obstacles that weren't in the map (e.g., people walking around).
+
+![image](https://cloud.githubusercontent.com/assets/1175286/25211613/d40bfb0e-253a-11e7-9772-da9fbf735051.png)
