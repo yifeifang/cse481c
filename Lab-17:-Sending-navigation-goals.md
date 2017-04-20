@@ -2,7 +2,7 @@ This lab mainly outlines what you will need to do for the next assignment.
 
 Create a package called `map_annotator`:
 ```
-cd ~/catkin_ws/src
+cd ~/catkin_ws/src/cse481c
 catkin create pkg map_annotator --catkin-deps roscpp rospy
 ```
 
