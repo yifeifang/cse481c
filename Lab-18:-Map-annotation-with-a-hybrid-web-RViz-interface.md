@@ -71,9 +71,24 @@ rostopic pub /pose_names map_annotator/PoseNames "names:
 - 'Test 1'
 - 'Test 2'"
 ```
+You should see "Test 1" and "Test 2" appear in the pose list with "Go to" and "Delete" buttons.
 
 # UserAction
 One technique for a web interface to communicate with the server is to treat the user's interaction with the interface as a stream of actions.
-In order words, you can publish a message to a topic whenever the user takes some action in the interface (clicks the "Create" button, clicks a "Delete" button, etc.)
-In this way, you can test your backend by just 
-This stream of actions can be recorded, analyzed, and played back for testing purposes.
+In order words, you can publish a message to a topic (e.g., `/user_actions`) whenever the user takes some action in the interface (clicks the "Create" button, clicks a "Delete" button, etc.)
+In this way, you can test your backend by just publishing messages to the `/user_actions` topic, even if the frontend isn't finished yet.
+This topic can also be recorded, analyzed, and played back for testing purposes.
+
+In this interface, all of the user actions can be specified with a `command` parameter that acts on a pose `name`.
+If you want to support renaming a pose from the web interface, you may also want to add an additional parameter, `updated_name`.
+Your `UserAction.msg` can look like this:
+
+```
+string CREATE=create
+string DELETE=delete
+string GOTO=goto
+# string RENAME=rename
+string command
+string name # The name of the pose the command applies to
+string updated_name # If command is RENAME, this is the new name of the pose
+```
