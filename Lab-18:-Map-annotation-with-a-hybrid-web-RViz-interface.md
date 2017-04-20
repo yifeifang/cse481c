@@ -109,8 +109,13 @@ And, if a pose is deleted from the web interface, the marker for that pose shoul
 
 **Hint:**
 Look at the *Chess Piece* marker in the [Interactive Markers Basic Controls tutorial](http://wiki.ros.org/rviz/Tutorials/Interactive%20Markers%3A%20Basic%20Controls) to get an idea of how to create a marker that can be dragged in the XY plane.
-To get it to rotate, you will need to make a slight modification, see the [InteractiveMarkerControl definition](http://docs.ros.org/indigo/api/visualization_msgs/html/msg/InteractiveMarkerControl.html) and figure out what that is.
-Note that the *Chess Piece* documentation incorrectly states that the code they provide will add an orientation ring around the marker.
+To get it to rotate, you will need to add another control to the interactive marker, see the [InteractiveMarkerControl definition](http://docs.ros.org/indigo/api/visualization_msgs/html/msg/InteractiveMarkerControl.html) and figure out what that is.
+Note that the *Chess Piece* documentation incorrectly states that the code they provide will add an orientation ring around the marker, you need to add a second control to get the ring.
+
+# Persisting data to disk
+The easiest way to do this is by simply using [pickle](https://docs.python.org/2/library/pickle.html) to save your data structure of poses to disk.
+You can register a function to run when the node is shutdown as described in [rospy: Initialization and Shutdown](http://wiki.ros.org/rospy/Overview/Initialization%20and%20Shutdown).
+Remember to reinitialize everything (web interface pose list, interactive markers) when the server starts up.
 
 # Testing with multiple browsers
 Once your tool is working, you should be able to load the webpage from your phone by visiting `COMPUTERNAME:8080/` in a web browser, where `COMPUTERNAME` is the name of your lab computer.
