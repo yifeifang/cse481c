@@ -1,5 +1,11 @@
 This lab mainly outlines what you will need to do for the next assignment.
 
+Create a package called `map_annotator`:
+```
+cd ~/catkin_ws/src
+catkin create pkg map_annotator --catkin-deps roscpp rospy
+```
+
 The goal of this assignment is to create a package that will allow you to save poses (including both position and orientation) in the map and assign names to those poses.
 You should then be able to send the robot to a previously saved pose by name.
 Additionally, you should be able to list, overwrite, and delete poses.
