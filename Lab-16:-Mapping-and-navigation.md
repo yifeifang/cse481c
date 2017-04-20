@@ -104,6 +104,27 @@ roslaunch applications build_map.launch
 
 With the terminal open next to RViz, you can now drive the robot around and watch it build up a map of the world.
 Drive around until your map is complete.
+Once it is complete, run:
+```
+mkdir ~/maps
+rosrun map_server map_saver -f ~/maps/playground
+```
+
+This will save your map to ~/maps/playground.yml and ~/maps.playground.pgm.
+The .pgm can be edited in an image editor like Gimp to clean up noise.
+
+## Mapping with the real robot
+Mapping with the real robot is similar to mapping in simulation.
+In this lab, you will not do any mapping because the lab space is too crowded.
+However, in the future, we might setup a robot workspace that you need to map.
+
+Here are some tips:
+- Start with the robot aligned with the walls (i.e., not at a diagonal)
+- Use the joystick to teleop instead of the keyboard (you can still leave keyboard teleop running)
+- You may want to run `build_map.launch` (sans Rviz) on the robot itself (as opposed to your lab computer) in case it loses its wifi connection as it drives around
+- Give the mapping plenty of opportunities to "close the loop," i.e., see something that it has seen before. That will make the mapping more accurate.
+- In simulation, the simulated data almost perfectly accurate, so the maps turn out very clean, but in the real world, the maps will look a lot messier. It may take multiple tries to get a good map.
+- Edit your .pgm file afterwards to clean up noise and erase ephemeral objects that shouldn't be in the map. For example, if someone was standing still in some location while you were mapping, they might become part of the map.
 
 # Sending navigation goals in RViz
 
