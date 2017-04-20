@@ -92,3 +92,15 @@ string command
 string name # The name of the pose the command applies to
 string updated_name # If command is RENAME, this is the new name of the pose
 ```
+
+At this point, your team should theoretically be able to work in two groups: one group that focuses on developing the rest of the web interface and another that focuses on developing the backend.
+To finish the web interface, you will need to instrument the interface such that it publishes the correct UserAction messages in response to button clicks.
+To work on the backend, you will need to subscribe the the `/user_actions` topic and add or remove poses as requested by the UserAction.
+A third component your team members can work on is the interactive marker interface.
+
+# Interactive marker interface
+Once a user creates a marker and gives it a name in the web interface, a new interactive marker should appear in RViz at the ground level at the (0, 0, 0) position and unit orientation.
+The marker should be an arrow, so that the user can tell which way the Fetch will be facing in this pose.
+The user should be able to change the marker's position and orientation.
+As the pose of the marker is changed, the database (or whatever data structure you are using to store the poses) should be updated.
+And, if a pose is deleted from the web interface, the marker for that pose should disappear from RViz as well.
