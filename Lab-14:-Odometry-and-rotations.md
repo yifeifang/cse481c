@@ -131,7 +131,7 @@ To remember this, use the right-hand rule: point your thumb in the positive dire
 To get Θ, first convert your quaternion into a rotation matrix form:
 ```py
 >>> q = Quaternion(x=0, y=0, z=-0.922528078753, w=-0.385929972809)
->>> m = tft.quaternion_matrix([q.x, q.y, q.z, q.x])
+>>> m = tft.quaternion_matrix([q.x, q.y, q.z, q.w])
 array([[-0.70211611, -0.71206247, -0.        ,  0.        ],
        [ 0.71206247, -0.70211611,  0.        ,  0.        ],
        [ 0.        , -0.        ,  1.        ,  0.        ],
