@@ -104,3 +104,8 @@ The marker should be an arrow, so that the user can tell which way the Fetch wil
 The user should be able to change the marker's position and orientation.
 As the pose of the marker is changed, the database (or whatever data structure you are using to store the poses) should be updated.
 And, if a pose is deleted from the web interface, the marker for that pose should disappear from RViz as well.
+
+# Testing with multiple browsers
+Once your tool is working, you should be able to load the webpage from your phone by visiting `COMPUTERNAME:8080/` in a web browser, where `COMPUTERNAME` is the name of your lab computer.
+If you are not on the CSE-Local wireless network, you may need to append `.cs.washington.edu` to `COMPUTERNAME`.
+Deleting a pose on your phone should be reflected on the desktop computer, and vice versa.
