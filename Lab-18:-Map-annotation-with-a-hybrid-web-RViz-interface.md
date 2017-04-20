@@ -112,6 +112,10 @@ Look at the *Chess Piece* marker in the [Interactive Markers Basic Controls tuto
 To get it to rotate, you will need to add another control to the interactive marker, see the [InteractiveMarkerControl definition](http://docs.ros.org/indigo/api/visualization_msgs/html/msg/InteractiveMarkerControl.html) and figure out what that is.
 Note that the *Chess Piece* documentation incorrectly states that the code they provide will add an orientation ring around the marker, you need to add a second control to get the ring.
 
+**Hint 2**:
+Your markers will be easier to click if you make the controls slightly off the ground.
+That way, the map visualization doesn't interfere with it.
+
 # Persisting data to disk
 The easiest way to do this is by simply using [pickle](https://docs.python.org/2/library/pickle.html) to save your data structure of poses to disk.
 You can register a function to run when the node is shutdown as described in [rospy: Initialization and Shutdown](http://wiki.ros.org/rospy/Overview/Initialization%20and%20Shutdown).
