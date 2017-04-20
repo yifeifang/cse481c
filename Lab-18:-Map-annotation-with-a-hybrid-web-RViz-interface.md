@@ -112,7 +112,7 @@ Don't forget to add an InteractiveMarker display to RViz.
 **Hint:**
 Look at the *Chess Piece* marker in the [Interactive Markers Basic Controls tutorial](http://wiki.ros.org/rviz/Tutorials/Interactive%20Markers%3A%20Basic%20Controls) to get an idea of how to create a marker that can be dragged in the XY plane.
 To get it to rotate, you will need to add another control to the interactive marker, see the [InteractiveMarkerControl definition](http://docs.ros.org/indigo/api/visualization_msgs/html/msg/InteractiveMarkerControl.html) and figure out what that is.
-Note that the *Chess Piece* documentation incorrectly states that the code they provide will add an orientation ring around the marker, you need to add a second control to get the ring.
+This control will not need any markers, because a rotation control renders a draggable ring by default.
 
 **Hint 2**:
 Your markers will be easier to click if you make the controls slightly off the ground.
