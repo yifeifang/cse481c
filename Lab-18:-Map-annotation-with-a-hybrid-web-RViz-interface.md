@@ -73,6 +73,8 @@ rostopic pub /pose_names map_annotator/PoseNames "names:
 ```
 You should see "Test 1" and "Test 2" appear in the pose list with "Go to" and "Delete" buttons.
 
+![image](https://cloud.githubusercontent.com/assets/1175286/25216800/21d53aee-2559-11e7-8c9c-de15cce503b3.png)
+
 # UserAction
 One technique for a web interface to communicate with the server is to treat the user's interaction with the interface as a stream of actions.
 In order words, you can publish a message to a topic (e.g., `/user_actions`) whenever the user takes some action in the interface (clicks the "Create" button, clicks a "Delete" button, etc.)
@@ -104,6 +106,9 @@ The marker should be an arrow, so that the user can tell which way the Fetch wil
 The user should be able to change the marker's position and orientation.
 As the pose of the marker is changed, the database (or whatever data structure you are using to store the poses) should be updated.
 And, if a pose is deleted from the web interface, the marker for that pose should disappear from RViz as well.
+
+**Hint:**
+Look at the *Chess Piece* marker in the [Interactive Markers Basic Controls tutorial](http://wiki.ros.org/rviz/Tutorials/Interactive%20Markers%3A%20Basic%20Controls) to get an idea of how to create a marker that can be dragged and rotated in the XY plane.
 
 # Testing with multiple browsers
 Once your tool is working, you should be able to load the webpage from your phone by visiting `COMPUTERNAME:8080/` in a web browser, where `COMPUTERNAME` is the name of your lab computer.
