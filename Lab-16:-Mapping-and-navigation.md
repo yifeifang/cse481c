@@ -113,6 +113,8 @@ rosrun map_server map_saver -f ~/maps/playground
 This will save your map to ~/maps/playground.yml and ~/maps.playground.pgm.
 The .pgm can be edited in an image editor like Gimp to clean up noise.
 
+![image](https://cloud.githubusercontent.com/assets/1175286/25209747/d457975c-2531-11e7-81bd-7796f383859c.png)
+
 ## Mapping with the real robot
 Mapping with the real robot is similar to mapping in simulation.
 In this lab, you will not do any mapping because the lab space is too crowded.
@@ -127,10 +129,60 @@ Here are some tips:
 - Edit your .pgm file afterwards to clean up noise and erase ephemeral objects that shouldn't be in the map. For example, if someone was standing still in some location while you were mapping, they might become part of the map.
 
 # Sending navigation goals in RViz
+Next, we will see how to send navigation goals to the robot in RViz.
 
-## RViz config
+## Set up a launch file
+First, shut down `build_map.launch`, as Karto is not supposed to be running while navigation is running.
+To do this, we need to launch RViz and the Fetch navigation launch file, `fetch_nav.launch`.
+
+First, let's see what's in `fetch_nav.launch`:
+```
+rosed fetch_navigation fetch_nav.launch
+```
+
+This launch file takes in several arguments, including `map_file`, which specifies which map the robot should use.
+Notice that it provides a default value.
+That map is not what we want, so we will need to pass in a different value for `map_file`.
+Note also that the Fetch navigation launch file will tilt the robot's head up and down, which is used for detecting obstacles.
+
+Create a launch file in `applications/launch/nav_rviz.launch` that launches `fetch_nav.launch` and RViz with the `navigation.rviz` config.
+
+```xml
+<launch>
+  <include file="???" />
+  <node pkg="rviz" type="rviz" name="???" args="???" />
+</launch>
+```
+
+However, recall that we have to override the `map_file` arg to `fetch_nav.launch`.
+Look at the documentation for [roslaunch XML](http://wiki.ros.org/roslaunch/XML) and scroll down to Section 4: Tag Reference.
+Next, click on `<include>`, which leads to the detailed documentation of how to use the `<include>` tag.
+The documentation states that you can pass in arguments using the `<arg>` tag.
+You should also look at the documentation for the `<arg>` tag to see how to use it.
+
+In your `nav_rviz.launch`, add an argument for `map_file` with a default value that points to the map we just created.
+Then, pass that arg to the `<include>` tag for `fetch_nav.launch`.
+The documentation on [substitution args](http://wiki.ros.org/roslaunch/XML#substitution_args) may also be helpful.
+
+```xml
+<launch>
+  <arg name="map_file" default="???" />
+  <include file="???">
+    <arg name="map_file" value="???"
+  </include>
+  <node pkg="rviz" type="rviz" name="???" args="???" />
+</launch>
+```
+
+Run the launch file.
+
+## Updating the RViz config
+Let's now update our RViz config to show more information specific to navigation.
 Add the following displays to RViz:
-- The particles from AMCL
-- The global path plan (in blue)
-- The local plan (in green)
+- The particles from AMCL (a PoseArray)
+- The global path plan (a Path, change the color to blue)
+- The local plan (a Path, keep the color green)
 - The cost map
+
+## Global localization
+
