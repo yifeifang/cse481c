@@ -182,7 +182,82 @@ Add the following displays to RViz:
 - The particles from AMCL (a PoseArray)
 - The global path plan (a Path, change the color to blue)
 - The local plan (a Path, keep the color green)
-- The cost map
+- The local cost map (a Map, change the color to "costmap" and set "Draw behind" to true)
+- The global cost map (a Map, set "Draw behind" to true and lower the alpha to 0.3)
+
+Notice that you can give names to the displays that you add by clicking on a display and clicking "Rename."
+Save your config file.
+
+You should now see something like this:
+![image](https://cloud.githubusercontent.com/assets/1175286/25210532/3124238a-2535-11e7-979b-6bf61de13f4b.png)
 
 ## Global localization
+At this point, the robot is probably in the wrong location on the map.
+When you first start up, the robot doesn't know where it is to start with.
+There are two approaches to solving this:
+- Global localization, in which AMCL attempts to localize itself automatically by spreading particles uniformly throughout the map
+- Manual input, in which the user inputs the location of the robot manually
 
+We will try the first approach.
+
+Type `rosnode info /amcl` and notice what services it implements.
+You should see a service for global localization.
+Use `rosservice info` to see the service's type.
+
+Call the service using `rosservice call` and see what happens to the particles in RViz:
+![image](https://cloud.githubusercontent.com/assets/1175286/25210648/c80bff5c-2535-11e7-8c51-59e78f73580c.png)
+
+Now try driving the robot around a bit with keyboard teleop and see if the particles converge to the correct location or not.
+You can try calling the global localization service from different starting points.
+
+Unfortunately, you probably will notice that global localization does not work unless you call the global localization service while the robot is inside one of the two rooms.
+The distinct shape of the rooms helps the robot quickly realize that it's in one of the rooms, and the particles eventually converge to the correct location.
+However, if you are in the hallway or out in the open, then the robot just sees a bunch of walls at different distances.
+That's not enough information for the robot to realize where it is.
+And, once the particles converge on the wrong location, they tend to stay wrong.
+
+## Manual localization
+Let's now try giving the robot an initial pose estimate manually.
+- Call the global localization service again. This should scramble the robot's location in RViz.
+- Now, look at where the robot actually is in Gazebo.
+- In RViz, click on the "2D Pose Estimate" button in the top toolbar. Click once on the map to set the robot's location, and click again to set its orientation.
+- You should see the laser scan align roughly with walls of the map.
+
+![image](https://cloud.githubusercontent.com/assets/1175286/25211104/47a7841e-2538-11e7-950e-4afbc718d5b9.png)
+
+Now, if you drive the robot around, it should easily stay localized.
+The downside of this approach is that it involves human intervention and that it requires you to know where the robot actually is, which may not be the case if you are operating the robot remotely.
+
+## Hunting: How does RViz do it?
+If you know that the robot is at a particular location, such as its charging station, you can also set an initial pose programmatically.
+The question is how.
+
+In this section, we will practice hunting.
+This is a good skill to have and the next section will require you to do something similar.
+
+We know that we can set the initial pose via RViz, and RViz is somehow communicating with AMCL.
+The three modes of communication in ROS are topics, services, and actions.
+If RViz is using topics or actions, then we should see it publishing to a topic that AMCL subscribes to.
+If RViz is calling a service then we should see AMCL offering a service that sets the initial pose.
+
+Run `rosnode info /rviz-...`, where you will need to use tab completion to get the name of the RViz node.
+In another terminal, run `rosnode info /amcl`.
+We can see that RViz publishes to a topic called `/initialpose`, which sounds promising.
+Our suspicions will be confirmed by running `rostopic info /initialpose`, which shows that AMCL is subscribing to it.
+So, to set the initial pose programmatically, we just publish a message on this topic.
+
+To get a final confirmation, just `rostopic echo /initialpose` and then set a 2D pose estimate in RViz again.
+You should see a message being published, which confirms our hypothesis, and also shows us a sample message.
+
+## Play with navigation
+We saved the fun part for last.
+Now that the robot has a map and is localized, it can autonomously navigate around the room.
+To do this, go to RViz and click on the "2D Nav Goal" button.
+Click someplace on the map and you should see the robot navigate there.
+
+A few things to notice:
+- If you set up RViz correctly, you should see a blue trail and a green trail. The blue trail is the "global" plan while the green trail is the "local" plan.
+- The costmap is like an inflated version of the map. Notice that the robot drives very slowly when in high cost areas, such as through a doorway.
+
+The global plan and costmap relate to how the robot sees the world just from the map data.
+The local plan and costmap incorporate dynamic factors, such as obstacles that weren't in the map (e.g., people walking around).
