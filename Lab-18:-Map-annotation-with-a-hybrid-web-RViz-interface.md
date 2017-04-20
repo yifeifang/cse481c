@@ -116,6 +116,9 @@ Note that the *Chess Piece* documentation incorrectly states that the code they 
 Your markers will be easier to click if you make the controls slightly off the ground.
 That way, the map visualization doesn't interfere with it.
 
+Here is an example of what your interactive marker might look like:
+![image](https://cloud.githubusercontent.com/assets/1175286/25220378/6c188fe0-2566-11e7-9735-c84cd1f6ee11.png)
+
 # Persisting data to disk
 The easiest way to do this is by simply using [pickle](https://docs.python.org/2/library/pickle.html) to save your data structure of poses to disk.
 You can register a function to run when the node is shutdown as described in [rospy: Initialization and Shutdown](http://wiki.ros.org/rospy/Overview/Initialization%20and%20Shutdown).
@@ -125,3 +128,9 @@ Remember to reinitialize everything (web interface pose list, interactive marker
 Once your tool is working, you should be able to load the webpage from your phone by visiting `COMPUTERNAME:8080/` in a web browser, where `COMPUTERNAME` is the name of your lab computer.
 If you are not on the CSE-Local wireless network, you may need to append `.cs.washington.edu` to `COMPUTERNAME`.
 Deleting a pose on your phone should be reflected on the desktop computer, and vice versa.
+
+# Final result
+Here is a video showing how your interface might look when done.
+Note that changes are synchronized between different browsers and RViz.
+Also note that when the backend is restarted, all the poses reappear in the same locations.
+[![image](http://i3.ytimg.com/vi/ZoHjurYzME0/hqdefault.jpg)](https://youtu.be/ZoHjurYzME0)
