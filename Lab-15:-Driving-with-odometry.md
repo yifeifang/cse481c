@@ -79,6 +79,28 @@ def turn(self, angular_distance, speed=0.5):
         rate.sleep()
 ```
 
+**Hints:**
+This part is a bit confusing because it's not as easy to compute the rotation remaining, due to the "wraparound" issue.
+
+Here are some helpful facts:
+- `math.atan2` returns values in the range [-pi, pi]
+- `x % (2*math.pi)` will always be in the range [0, 2*math.pi]
+
+Let's assume that you can get your current yaw angle and your desired yaw angle in the range [0, 2*math.pi].
+How can we compute the remaining angle (assume the remaining angle should be a positive value and we store the direction separately)?
+Then, you will need to handle the following 4 cases:
+1. Current to goal is counter-clockwise (CCW), no no wraparound in between
+1. Current to goal is CCW, with wraparound in between
+1. Current to goal is CW, no wraparound in between
+1. Current to goal is CW, with wraparound in between
+
+![untitled drawing 3](https://cloud.githubusercontent.com/assets/1175286/25262716/d5c6c4f4-260e-11e7-85b4-6ef781f92892.png)
+
+In the first case, computing the remaining distance to go CCW is easy: goal - current.
+However, this doesn't appear to work for the second case: goal - current = -270, but the remaining CCW distance should be 90.
+How can you modify this formula to work for both the first and second case?
+Once you have this formula, notice that the third and fourth cases are the same as the first two, but with the goal and current positions flipped.
+
 # Test your odometry controllers
 You can use this demo, which you should place in `applications/scripts/base_demo.py`:
 
@@ -199,4 +221,18 @@ class DestinationMarker(object):
          position = interactive_marker.pose.position
          rospy.loginfo('User clicked {} at {}, {}, {}'.format(msg.marker_name, position.x, position.y, position.z))
          self._driver.goal = new_position # Updates the Driver's goal.
+```
+
+## Accounting for drift
+You may notice that the robot will drift off-course.
+This is mainly due to imprecision when the robot rotates toward the target.
+You can correct for this drift by checking if the robot is pointed close enough to the target at the beginning of your while loop.
+If it is too off course, then you can set the state back to "turn."
+This way, the robot will continuously keep itself pointed to the target as it drives over.
+
+Another trick that can help is to slow the robot down as it approaches the goal (either for turning or for driving forward).
+A simple way to do this is to scale the speed linearly with the remaining distance, but with upper and lower bounds:
+```
+linear_speed = max(0.05, min(0.5, remaining_distance))
+angular_speed = max(0.25, min(1, remaining_angle))
 ```
