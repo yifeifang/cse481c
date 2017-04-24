@@ -1,6 +1,10 @@
 Welcome to CSE 481C, Spring 2017!
 A list of labs for the class is below.
 
+## Week 5
+### Tuesday
+- [[Lab 19: Cartesian space manipulation]]
+
 ## Week 4
 ### Tuesday
 - [[Lab 11: Visualizations in ROS with RViz]]
