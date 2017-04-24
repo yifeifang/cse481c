@@ -22,6 +22,8 @@ Motion planning generates an arm trajectory for you given the desired goal and a
 
 # MoveIt
 The primary motion planning framework for ROS is called [MoveIt](http://moveit.ros.org/).
-The tutorials for MoveIt can be found on the [Tutorials](http://docs.ros.org/indigo/api/moveit_tutorials/html/doc/pr2_tutorials/planning/scripts/doc/move_group_python_interface_tutorial.html) link of the MoveIt website.
+You can find more information from:
+- The official [MoveIt tutorials](http://docs.ros.org/indigo/api/moveit_tutorials/html/doc/pr2_tutorials/planning/scripts/doc/move_group_python_interface_tutorial.html) from the MoveIt website.
+- The [Fetch manipulation tutorial](http://docs.fetchrobotics.com/manipulation.html)
 
 # Sending Cartesian goals for the gripper
