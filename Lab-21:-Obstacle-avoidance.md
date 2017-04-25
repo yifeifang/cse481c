@@ -143,3 +143,41 @@ Be warned: even with lots of tweaking, it may not always work.
 Finally, try changing the position and sizes of the obstacles and see what happens.
 Often, you will find that you cannot rely entirely on motion planning to solve all your arm movement needs.
 You may need to reposition the robot or program waypoints into your system.
+
+# Attach an object to the robot
+When the robot is holding something in its gripper, it needs to ensure that the object does not collide with anything in the environment, either.
+
+MoveIt distinguishes between "collision" and "attached" objects.
+Collision objects are parts of the scene to avoid, while attached objects become part of the robot.
+
+We can attach an object to the robot with `moveit_python`:
+```py
+# Before moving to the first pose
+planning_scene.removeAttachedObject('tray')
+
+
+# If the robot reaches the first pose successfully, then "attach" an object there
+# Of course, you would have to close the gripper first and ensure that you grasped the object properly
+if ...:
+else:
+    rospy.loginfo('Pose 1 succeeded')
+    frame_attached_to = 'gripper_link'
+    frames_okay_to_collide_with = [
+        'gripper_link', 'l_gripper_finger_link', 'r_gripper_finger_link'
+    ]
+    planning_scene.attachBox('tray', 0.3, 0.07, 0.01, 0.05, 0, 0,
+                             frame_attached_to, frames_okay_to_collide_with)
+    planning_scene.setColor('tray', 1, 0, 1)
+    planning_scene.sendColors()
+
+# At the end of your program
+planning_scene.removeAttachedObject('tray')
+```
+
+Note that we specify that the tray (or ruler or whatever the object looks like to you) is attached to the `gripper_link` frame, and is allowed to contact the two fingertip frames.
+Otherwise, MoveIt would treat those as collisions.
+
+If you run your program now, you should see the "tray" appear in the robot's hand after it reaches pose 1 successfully.
+It then makes a plan to avoid collisions between the tray and the obstacles, as well as with itself.
+
+![image](https://cloud.githubusercontent.com/assets/1175286/25379481/07923f8a-2962-11e7-8eab-8995f15d6536.png)
