@@ -17,14 +17,15 @@ oc = OrientationConstraint()
 oc.header.frame_id = 'base_link'
 oc.link_name = 'wrist_roll_link'
 oc.orientation.w = 1
-oc.absolute_x_axis_tolerance = 6.28
-oc.absolute_y_axis_tolerance = 6.28
-oc.absolute_z_axis_tolerance = 0.01
+oc.absolute_x_axis_tolerance = 0.1
+oc.absolute_y_axis_tolerance = 0.1
+oc.absolute_z_axis_tolerance = 3.14
 oc.weight = 1.0
 ```
 
-This will constrain the gripper to point straight ahead.
+This will constrain the gripper to stay upright.
 
-To see this work, you will probably need to increase the planning and execution times.
-Additionally, you may want to lower the divider to make the planning task easier.
+To see this work, you will need to get rid of the divider.
 The more bells and whistles we add, the slower the motion planning takes.
+Unfortunately, planning with orientation constraints is very slow -- too slow in addition to attached objects and obstacle avoidance.
+Again, you will need to structure your system to only use a subset of MoveIt's capabilities at a time.
