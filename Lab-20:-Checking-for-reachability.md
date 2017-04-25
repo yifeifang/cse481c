@@ -144,6 +144,8 @@ if __name__ == '__main__':
     main()
 ```
 
+You will need to run `move_group.launch` if it is not still open from the previous lab.
+This is true whenever you want to do anything with MoveIt.
 You should see:
 ```
 rosrun applications check_cart_pose.py 0.5 0 1
