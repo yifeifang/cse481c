@@ -273,7 +273,7 @@ In this case, it's also perfectly reasonable to use the `arm_with_torso` group s
 But, by not doing so, we were able to test our error code handling.
 And, depending on your application, you may want to keep the torso height under your control.
 
-Run your demo again and you should see the robot raise its torso and wave its gripper.
+Run your demo again and you should see the robot wave its gripper.
 However, if you watch it closely, you may notice that it occasionally takes weird paths that don't look like waves at all, especially in the beginning.
 
 # Wave demo attempt 2
