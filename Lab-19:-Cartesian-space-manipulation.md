@@ -70,7 +70,7 @@ You will also need to add  `from .moveit_goal_builder import MoveItGoalBuilder` 
 
 **Method signature**
 
-In `fetch_api/arm.py`, add a method to `Arm` called `move_to_base_pose`:
+In `fetch_api/arm.py`, add a method to `Arm` called `move_to_pose`:
 ```py
 def move_to_pose(self, pose_stamped):
     """Moves the end-effector to a pose, using motion planning.
@@ -86,7 +86,7 @@ def move_to_pose(self, pose_stamped):
 
 **Imports**
 
-To implement `move_to_base_pose`, you will first need to import:
+To implement `move_to_pose`, you will first need to import:
 ```py
 from .moveit_goal_builder import MoveItGoalBuilder
 from moveit_msgs.msg import MoveItErrorCodes, MoveGroupAction                                  
