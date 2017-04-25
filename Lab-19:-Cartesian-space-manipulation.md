@@ -95,7 +95,7 @@ from moveit_msgs.msg import MoveItErrorCodes, MoveGroupAction
 **Initialization**
 
 Create a `MoveGroupAction` action client in your `__init__` method.
-The name of the action server is 
+The name of the action server is `move_group`.
 
 **Sending the goal**
 
