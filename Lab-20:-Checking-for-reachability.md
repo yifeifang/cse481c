@@ -35,7 +35,7 @@ def main():
     argv = rospy.myargv()
     if len(argv) < 4:
         print 'Usage: rosrun applications check_cart_pose.py X Y Z'                  
-    x, y, z = argv[1], argv[2], argv[3]
+    x, y, z = float(argv[1]), float(argv[2]), float(argv[3])
         
     arm = fetch_api.Arm()
     pose = Pose(Point(x, y, z), Quaternion(0, 0, 0, 1))
