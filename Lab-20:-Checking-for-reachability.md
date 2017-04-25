@@ -132,7 +132,10 @@ def main():
             rospy.loginfo('No plan found.')
         arm.cancel_all_goals()
     elif command == 'ik':
-        pass
+        if arm.compute_ik(ps):
+            rospy.loginfo('Found IK!')
+        else:
+            rospy.loginfo('No IK found.')
     else:           
         print_usage()
                     
