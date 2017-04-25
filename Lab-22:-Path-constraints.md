@@ -23,4 +23,8 @@ oc.absolute_z_axis_tolerance = 0.01
 oc.weight = 1.0
 ```
 
-This will constrain the gripper to point straight ahead
+This will constrain the gripper to point straight ahead.
+
+To see this work, you will probably need to increase the planning and execution times.
+Additionally, you may want to lower the divider to make the planning task easier.
+The more bells and whistles we add, the slower the motion planning takes.
