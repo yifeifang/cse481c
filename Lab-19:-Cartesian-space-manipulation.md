@@ -267,10 +267,9 @@ You should see output like this:
 This indicates to you that MoveIt was unable to find a path to move the arm.
 You can also see that the default planning time (before MoveIt gives up) is 10 seconds.
 The reason why this fails is because the gripper goal poses are quite high up (about 1.8 meters above the ground).
-So, your demo will actually need to raise the torso first:
-```py
-torso = fetch_api.Torso()
-torso.set_height(fetch_api.Torso.MAX_HEIGHT)
+So, you need to raise the torso before running your demo:
+```
+rosrun applications torso_demo.py 0.4
 ```
 
 In this case, it's also perfectly reasonable to use the `arm_with_torso` group so MoveIt can move the torso up for you automatically.
