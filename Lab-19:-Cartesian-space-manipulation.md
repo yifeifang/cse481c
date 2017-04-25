@@ -26,6 +26,20 @@ You can find more information from:
 - The official [MoveIt tutorials](http://docs.ros.org/indigo/api/moveit_tutorials/html/doc/pr2_tutorials/planning/scripts/doc/move_group_python_interface_tutorial.html) from the MoveIt website.
 - The [Fetch manipulation tutorial](http://docs.fetchrobotics.com/manipulation.html)
 
+### Python vs. C++
+MoveIt can be used with both Python and C++ interfaces.
+We will be using Python.
+When we get to the perception labs in a couple of weeks, at least one or two members of your group will need to be comfortable with C++.
+
+There are two Python interfaces for MoveIt: `moveit_commander` and `moveit_python`.
+`moveit_commander` is the "official" one and is used in the MoveIt tutorials.
+It works by using a wrapper around the C++ API.
+
+`moveit_python` was written by a Fetch Robotics employee and is used in the Fetch manipulation tutorial.
+It is written in pure Python (i.e., it does not use a C++ wrapper) and supports a subset of the functionality provided by `moveit_commander`.
+This lab will follow the Fetch manipulation tutorial and use `moveit_python`.
+Many of the concepts in this lab will transfer over to `moveit_commander` and the MoveIt C++ API should you need them.
+
 ### `MoveGroup`
 MoveIt provides an action, called [MoveGroup](http://docs.ros.org/indigo/api/moveit_msgs/html/action/MoveGroup.html) that actually triggers the motion planning and execution given a goal.
 You run the action server as part of the MoveIt backend, `move_group.launch`.
