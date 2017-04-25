@@ -5,6 +5,12 @@ A list of labs for the class is below.
 ### Tuesday
 - [[Lab 19: Cartesian space manipulation]]
 - [[Lab 20: Checking for reachability]]
+- [[Lab 21: Obstacle avoidance]]
+- [[Lab 22: Orientation constraints]]
+
+### Thursday
+- [[Lab 23: TF]]
+- [[Lab 24: Transform arithmetic]]
 
 ## Week 4
 ### Tuesday
