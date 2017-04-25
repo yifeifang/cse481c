@@ -6,9 +6,9 @@ A list of labs for the class is below.
 - [[Lab 19: Cartesian space manipulation]]
 - [[Lab 20: Checking for reachability]]
 - [[Lab 21: Obstacle avoidance]]
+- [[Lab 22: Path constraints]]
 
 ### Thursday
-- [[Lab 22: Orientation constraints]]
 - [[Lab 23: TF]]
 - [[Lab 24: Transform arithmetic]]
 
