@@ -12,7 +12,7 @@ You can then use the motion planning approach to tell you whether the *first* po
 Once you are at the first pose, then you can run the motion planner again to tell you if the *second* pose is reachable, etc.
 
 # Check the plan
-Look at the documentation for `MoveItGoalBuilder`.
+Look at the documentation for [MoveItGoalBuilder](https://github.com/cse481sp17/cse481c/blob/indigo-devel/fetch_api/src/fetch_api/moveit_goal_builder.py).
 You can see that it supports many possible arguments.
 Although we will not use all of these arguments, we will add support for many of these arguments now.
 
