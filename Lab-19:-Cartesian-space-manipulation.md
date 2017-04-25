@@ -26,6 +26,16 @@ You can find more information from:
 - The official [MoveIt tutorials](http://docs.ros.org/indigo/api/moveit_tutorials/html/doc/pr2_tutorials/planning/scripts/doc/move_group_python_interface_tutorial.html) from the MoveIt website.
 - The [Fetch manipulation tutorial](http://docs.fetchrobotics.com/manipulation.html)
 
+### `MoveGroup`
+MoveIt provides an action, called [MoveGroup](http://docs.ros.org/indigo/api/moveit_msgs/html/action/MoveGroup.html) that actually triggers the motion planning and execution given a goal.
+You run the action server as part of the MoveIt backend, `move_group.launch`.
+There are many options to set as part of the MoveGroup action, so MoveIt provides Python and C++ classes that wrap the action client and provide convenience methods for you.
+
+In case you are wondering, a "group" is MoveIt's term for a set of joints to plan for.
+In the case of the Fetch, there are three groups that have been pre-configured for you: *arm*, *arm_with_torso*, and *gripper*.
+The difference between the *arm* and *arm_with_torso* groups is that the *arm_with_torso* will plan to move the torso along with the arm, while the *arm* group can only plan to move the arm.
+In this lab, we will use the *arm* group, but using *arm_with_torso* is perfectly reasonable.
+
 ### Our MoveIt interface
 MoveIt can be used with both Python and C++ interfaces.
 We will be using Python.
@@ -40,7 +50,7 @@ It is written in pure Python (i.e., it does not use a C++ wrapper) and supports 
 
 Unfortunately, neither Python interface supports all the features that we will need in this class.
 Instead, you will use a custom interface written for this class.
-However, the same basic ideas will transfer over.
+However, the same basic ideas will transfer to whatever code you use in the future.
 
 Both existing Python MoveIt interfaces wrap an ActionClient for the [MoveGroup Action](http://docs.ros.org/jade/api/moveit_msgs/html/action/MoveGroup.html).
 However, `moveit_commander` hides the action client from you and always waits for infinite time for an action execution to complete.
@@ -50,25 +60,6 @@ This is problematic, as we'll see.
 Our MoveIt interface is the best of both worlds.
 All our interface does is provide an easy way to generate MoveGroup action goals, which are quite complicated.
 You write the action client yourself and send one of our generated goals.
-
-### `MoveGroup`
-MoveIt provides an action, called [MoveGroup](http://docs.ros.org/indigo/api/moveit_msgs/html/action/MoveGroup.html) that actually triggers the motion planning and execution given a goal.
-You run the action server as part of the MoveIt backend, `move_group.launch`.
-There are many options to set as part of the MoveGroup action, so MoveIt provides Python and C++ classes that wrap the action client and provide convenience methods for you.
-
-In case you are wondering, a "group" is MoveIt's term for a set of joints to plan for.
-In the case of the Fetch, there are three groups that have been pre-configured for you: *arm*, *arm_with_torso*, and *gripper*.
-The difference between the *arm* and *arm_with_torso* groups is that the *arm_with_torso* will plan to move the torso along with the arm, while the *arm* group can only plan to move the arm.
-In this lab, we will use the *arm* group, but using *arm_with_torso* is perfectly reasonable.
-
-### `PlanningSceneInterface`
-The MoveGroup action will plan a path that is free of self-collisions, but the arm could still collide with other parts of the environment.
-`PlanningSceneInterface` MoveIt's representation of the world.
-You use this to specify what the robot should not collide with.
-To do this, you "add" primitive shapes or meshes representing the workspace to the planning scene.
-
-MoveIt also has built-in capability to automatically infer the planning scene from sensor data.
-However, this is most likely will be very slow, so we recommend using shapes and meshes for now.
 
 # Sending Cartesian goals for the gripper
 In this lab, we will get started with the very basics of MoveIt, following the [Fetch manipulation tutorial](http://docs.fetchrobotics.com/manipulation.html#simple-moveit-wave-example), but using our MoveIt interface.
