@@ -110,8 +110,11 @@ planning_scene.removeCollisionObject('table')
 planning_scene.removeCollisionObject('divider')
 ```
 
-# Run the demo
+# Visualize the plans
 Keep RViz open, so that you can see the position of the arm relative to the obstacles.
+Add a "Trajectory" display.
+Later, when you run your code, you should see a ghostly robot arm previewing the motion plans.
+![image](https://cloud.githubusercontent.com/assets/1175286/25377906/ac5cced6-295d-11e7-9660-6c1941eda633.png)
 
 ## No obstacles
 Try first by commenting out the code that adds the divider to the planning scene.
