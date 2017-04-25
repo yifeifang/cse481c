@@ -26,7 +26,7 @@ You can find more information from:
 - The official [MoveIt tutorials](http://docs.ros.org/indigo/api/moveit_tutorials/html/doc/pr2_tutorials/planning/scripts/doc/move_group_python_interface_tutorial.html) from the MoveIt website.
 - The [Fetch manipulation tutorial](http://docs.fetchrobotics.com/manipulation.html)
 
-### Python vs. C++
+### Our MoveIt interface
 MoveIt can be used with both Python and C++ interfaces.
 We will be using Python.
 When we get to the perception labs in a couple of weeks, at least one or two members of your group will need to be comfortable with C++.
@@ -37,8 +37,19 @@ It works by using a wrapper around the C++ API.
 
 `moveit_python` was written by a Fetch Robotics employee and is used in the Fetch manipulation tutorial.
 It is written in pure Python (i.e., it does not use a C++ wrapper) and supports a subset of the functionality provided by `moveit_commander`.
-This lab will follow the Fetch manipulation tutorial and use `moveit_python`.
-Many of the concepts in this lab will transfer over to `moveit_commander` and the MoveIt C++ API should you need them.
+
+Unfortunately, neither Python interface supports all the features that we will need in this class.
+Instead, you will use a custom interface written for this class.
+However, the same basic ideas will transfer over.
+
+Both existing Python MoveIt interfaces wrap an ActionClient for the [MoveGroup Action](http://docs.ros.org/jade/api/moveit_msgs/html/action/MoveGroup.html).
+However, `moveit_commander` hides the action client from you and always waits for infinite time for an action execution to complete.
+This is problematic, as we'll see.
+`moveit_python` gives you access to the action client, but it lacks the full feature set of the MoveIt system.
+
+Our MoveIt interface is the best of both worlds.
+All our interface does is provide an easy way to generate MoveGroup action goals, which are quite complicated.
+You write the action client yourself and send one of our generated goals.
 
 ### `MoveGroup`
 MoveIt provides an action, called [MoveGroup](http://docs.ros.org/indigo/api/moveit_msgs/html/action/MoveGroup.html) that actually triggers the motion planning and execution given a goal.
@@ -60,16 +71,21 @@ MoveIt also has built-in capability to automatically infer the planning scene fr
 However, this is most likely will be very slow, so we recommend using shapes and meshes for now.
 
 # Sending Cartesian goals for the gripper
-In this lab, we will get started with the very basics of MoveIt, following the [Fetch manipulation tutorial](http://docs.fetchrobotics.com/manipulation.html#simple-moveit-wave-example).
+In this lab, we will get started with the very basics of MoveIt, following the [Fetch manipulation tutorial](http://docs.fetchrobotics.com/manipulation.html#simple-moveit-wave-example), but using our MoveIt interface.
+
+You can find our interface in the course repository in `fetch_api/src/fetch_api/moveit_goal_builder.py`.
+Copy this code to your own repository.
+You will also need to add  `from .moveit_goal_builder import MoveItGoalBuilder` to `__init__.py`.
+
+**Method signature**
 
 In `fetch_api/arm.py`, add a method to `Arm` called `move_to_base_pose`:
 ```py
-def move_to_base_pose(self, pose):
+def move_to_pose(self, pose_stamped):
     """Moves the end-effector to a pose, using motion planning.
 
     Args:
-        pose: geometry_msgs/Pose, the goal pose for the gripper in the
-            Arm.BASE_FRAME frame.
+        pose: geometry_msgs/PoseStamped. The goal pose for the gripper.
 
     Returns:
         string describing the error if an error occurred, else None.
@@ -77,35 +93,44 @@ def move_to_base_pose(self, pose):
     pass
 ```
 
-This method takes in a pose that is in the `base_link` frame, which is why the method is called `move_to_base_pose`.
-In a future lab, we will write a different method called `move_to_pose` that can take a pose in any frame.
+**Imports**
 
 To implement `move_to_base_pose`, you will first need to import:
 ```py
-from moveit_msgs.msg import MoveItErrorCodes                                    
-from moveit_python import MoveGroupInterface, PlanningSceneInterface
+from .moveit_goal_builder import MoveItGoalBuilder
+from moveit_msgs.msg import MoveItErrorCodes, MoveGroupAction                                  
 ```
 
-Create a `MoveGroup` instance in your `__init__` method:
-```py
-def __init__(self):
-    self._move_group = MoveGroupInterface(ARM_GROUP_NAME, Arm.BASE_FRAME) # "arm" and "base_link"
+**Initialization**
+
+Create a `MoveGroupAction` action client in your `__init__` method.
+The name of the action server is 
+
+**Sending the goal**
+
+To create a goal, call:
+```
+goal_builder = MoveItGoalBuilder()
+goal_builder.set_pose_goal(pose_stamped)
+goal = goal_builder.build()
 ```
 
-Next, fill out `move_to_base_pose` based on the manipulation tutorial linked above.
-- We are supplying a geometry_msgs/Pose to the method, but `moveToPose` expects a `geometry_msgs/PoseStamped`. You will need to create this message and fill out the `frame_id` and `stamp`.
-- Notice that `self._move_group.get_move_action()` is an ActionClient. So, everything you learned about using ActionClients when you wrote `fetch_api` package applies to this as well.
-- Look at the definition of the `MoveGroup` action (linked above). You should see that the `MoveGroupResult` section contains a field called `error`.
+Next, fill out `move_to_pose` based on the manipulation tutorial linked above.
+- Look at the definition of the `MoveGroup` action (linked above). You should see that the `MoveGroupResult` section contains a field called `error_code`.
 - Look up the errors that can occur.
 - Your method should return `None` on success, or an error string if the error code of the action result is not `SUCCESS`.
 - We provide a utility function for mapping an error code to a string below.
+
+**Cancel method**
 
 Finally, for safety purposes, add a `cancel_all_goals()` method to your `Arm` class, which will be called in your demo:
 ```py
 def cancel_all_goals(self):
     self._client.cancel_all_goals() # Your action client from Lab 7
-    self._move_group.cancel_all_goals() # From this lab
+    self._move_group_client.cancel_all_goals() # From this lab
 ```
+
+**Converting error codes to strings**
 
 This is a helpful utility function:
 ```py
@@ -184,8 +209,6 @@ error = arm.move_to_base_pose(pose)
 if error is not None:
     rospy.logerr(error)
 ```
-
-Also, make sure that in `arm.py`, your `MoveGroupInterface` is using the `'arm'` group, not `'arm_with_torso'`.
 
 In your `main` function, be sure to cancel all goals on shutdown.
 This is a safety feature that ensures that if you accidentally run the code on the real robot, you can stop the arm from moving by just killing your node.
