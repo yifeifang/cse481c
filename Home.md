@@ -4,6 +4,7 @@ A list of labs for the class is below.
 ## Week 5
 ### Tuesday
 - [[Lab 19: Cartesian space manipulation]]
+- [[Lab 20: Checking for reachability]]
 
 ## Week 4
 ### Tuesday
