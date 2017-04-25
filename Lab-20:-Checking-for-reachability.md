@@ -24,7 +24,7 @@ Update the signature of `move_to_pose` in your `Arm` class to be:
 def move_to_pose(self,
                  pose_stamped,
                  allowed_planning_time=10.0,
-                 execution_timeout=rospy.Duration(15.0),
+                 execution_timeout=15.0,
                  group_name='arm',
                  num_planning_attempts=1,
                  plan_only=False,
@@ -36,9 +36,10 @@ def move_to_pose(self,
     Args:
         pose: geometry_msgs/PoseStamped. The goal pose for the gripper.
         allowed_planning_time: float. The maximum duration to wait for a
-            planning result.
-        execution_timeout: rospy.Duration. The maximum duration to wait for
-            an arm motion to execute (or for planning to fail completely).
+            planning result, in seconds.
+        execution_timeout: float. The maximum duration to wait for
+            an arm motion to execute (or for planning to fail completely),
+            in seconds.
         group_name: string. Either 'arm' or 'arm_with_torso'.
         num_planning_attempts: int. The number of times to compute the same
             plan. The shortest path is ultimately used. For random
@@ -68,6 +69,8 @@ Now, pass all of these extra arguments to the `MoveItGoalBuilder`:
     goal_builder.replan_attempts = replan_attempts
     goal_builder.tolerance = tolerance
     goal = goal_builder.build()
+    # Use execution_timeout for wait_for_result()
+    self._move_group_client.wait_for_result(rospy.Duration(execution_timeout))
 ```
 
 Since it feels a bit weird to have a method called `move_to_pose` that doesn't actually move the robot's arm, you might want to add a convenience method:
