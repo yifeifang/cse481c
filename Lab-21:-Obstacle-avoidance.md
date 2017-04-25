@@ -138,6 +138,9 @@ Try raising the torso to its maximum height to help the arm get over the divider
 ## Attempt 3: Play with parameters
 Play around with the parameters and see if you can get the robot to consistently move its gripper from one side of the divider to the other.
 Be warned: even with lots of tweaking, it may not always work.
+As you play with the parameters, you may find that `move_group.launch` crashes.
+In that case, the choice of the parameter values may be overloading the `move_group` node.
+Restart it.
 
 ## Attempt 4: Change the obstacles
 Finally, try changing the position and sizes of the obstacles and see what happens.
