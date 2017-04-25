@@ -201,7 +201,7 @@ gripper_poses = [pose1, pose2]
 
 Your demo should use your new arm method and check the error code:
 ```py
-error = arm.move_to_base_pose(pose)
+error = arm.move_to_pose(pose)
 if error is not None:
     rospy.logerr(error)
 ```
