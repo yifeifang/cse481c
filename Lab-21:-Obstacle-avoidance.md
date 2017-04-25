@@ -135,3 +135,8 @@ Try raising the torso to its maximum height to help the arm get over the divider
 ## Attempt 3: Play with parameters
 Play around with the parameters and see if you can get the robot to consistently move its gripper from one side of the divider to the other.
 Be warned: even with lots of tweaking, it may not always work.
+
+## Attempt 4: Change the obstacles
+Finally, try changing the position and sizes of the obstacles and see what happens.
+Often, you will find that you cannot rely entirely on motion planning to solve all your arm movement needs.
+You may need to reposition the robot or program waypoints into your system.
