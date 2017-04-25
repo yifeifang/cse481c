@@ -64,7 +64,7 @@ You write the action client yourself and send one of our generated goals.
 # Sending Cartesian goals for the gripper
 In this lab, we will get started with the very basics of MoveIt, following the [Fetch manipulation tutorial](http://docs.fetchrobotics.com/manipulation.html#simple-moveit-wave-example), but using our MoveIt interface.
 
-You can find our interface in the course repository in `fetch_api/src/fetch_api/moveit_goal_builder.py`.
+You can find our interface in the course repository in [fetch_api/src/fetch_api/moveit_goal_builder.py](https://github.com/cse481sp17/cse481c/blob/indigo-devel/fetch_api/src/fetch_api/moveit_goal_builder.py).
 Copy this code to your own repository.
 You will also need to add  `from .moveit_goal_builder import MoveItGoalBuilder` to `__init__.py`.
 
