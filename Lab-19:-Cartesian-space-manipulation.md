@@ -63,7 +63,10 @@ def move_to_base_pose(self, pose):
     pass
 ```
 
-To implement this, you will first need to import:
+This method takes in a pose that is in the `base_link` frame, which is why the method is called `move_to_base_pose`.
+In a future lab, we will write a different method called `move_to_pose` that can take a pose in any frame.
+
+To implement `move_to_base_pose`, you will first need to import:
 ```py
 from moveit_msgs.msg import MoveItErrorCodes                                    
 from moveit_python import MoveGroupInterface, PlanningSceneInterface
@@ -76,10 +79,19 @@ def __init__(self):
 ```
 
 Next, fill out `move_to_base_pose` based on the manipulation tutorial linked above.
+- We are supplying a geometry_msgs/Pose to the method, but `moveToPose` expects a `geometry_msgs/PoseStamped`. You will need to create this message and fill out the `frame_id` and `stamp`.
 - Notice that `self._move_group.get_move_action()` is an ActionClient. So, everything you learned about using ActionClients when you wrote `fetch_api` package applies to this as well.
 - Look at the definition of the `MoveGroup` action (linked above). You should see that the `MoveGroupResult` section contains a field called `error`.
 - Look up the errors that can occur.
 - Your method should return `None` on success, or an error string if the error code of the action result is not `SUCCESS`.
+- We provide a utility function for mapping an error code to a string below.
+
+Finally, for safety purposes, add a `cancel_all_goals()` method to your `Arm` class, which will be called in your demo:
+```py
+def cancel_all_goals(self):
+    self._client.cancel_all_goals() # Your action client from Lab 7
+    self._move_group.cancel_all_goals() # From this lab
+```
 
 This is a helpful utility function:
 ```py
@@ -143,3 +155,153 @@ def moveit_error_string(val):
     else:
         return 'UNKNOWN_ERROR_CODE'
 ```
+
+# Wave demo
+Write a demo called `cart_arm_demo.py` that repeatedly moves the gripper between these two poses:
+```py
+pose1 = Pose(Point(0.042, 0.384, 1.826), Quaternion(0.173, -0.693, -0.242, 0.657))
+pose2 = Pose(Point(0.047, 0.545, 1.822), Quaternion(-0.274, -0.701, 0.173, 0.635))
+gripper_poses = [pose1, pose2]
+```
+
+Your demo should use your new arm method and check the error code:
+```py
+error = arm.move_to_base_pose(pose)
+if error is not None:
+    rospy.logerr(error)
+```
+
+Also, make sure that in `arm.py`, your `MoveGroupInterface` is using the `'arm'` group, not `'arm_with_torso'`.
+
+In your `main` function, be sure to cancel all goals on shutdown.
+This is a safety feature that ensures that if you accidentally run the code on the real robot, you can stop the arm from moving by just killing your node.
+Make sure the register the shutdown handler **BEFORE** entering any infinite loops.
+```py
+def main():
+   # ... init ...
+   arm = ...
+   def shutdown():
+       arm.cancel_all_goals()
+   rospy.on_shutdown(shutdown)
+   
+   # Move the arm
+```
+
+# Run the demo
+With `roscore` and Gazebo running, launch the version of MoveIt pre-configured for the Fetch:
+```
+roslaunch fetch_moveit_config move_group.launch
+```
+
+Wait for this message to appear before continue:
+```
+All is well! Everyone is happy! You can start planning now!
+```
+
+Now run your node and wait 15 seconds:
+```
+rosrun applications cart_arm_demo.py
+```
+
+If you implemented your error handling correctly, you should see the following output:
+```
+/cart_arm_demo main:38: PLANNING_FAILED
+/cart_arm_demo main:38: PLANNING_FAILED
+```
+
+Take a look also at the terminal where you launched MoveIt.
+You should see output like this:
+```
+/move_group :224: LBKPIECE1: Created 1 (1 start + 0 goal) states in 1 cells (1 start (1 on boundary) + 0 goal (0 on boundary))
+/move_group :117: No solution found after 15.002214 seconds
+/move_group :529: Unable to solve the planning problem
+/move_group MoveGroupMoveAction::executeMoveCallback_PlanAndExecute:95: Combined planning and execution request received for MoveGroup action. Forwarding to planning and execution pipeline.
+/move_group PlanExecution::planAndExecuteHelper:176: Planning attempt 1 of at most 1
+/move_group :243: No optimization objective specified, defaulting to PathLengthOptimizationObjective
+/move_group :113: LBKPIECE1: Starting planning with 1 states already in datastructure
+/move_group :141: LBKPIECE1: Unable to sample any valid states for goal tree
+```
+
+This indicates to you that MoveIt was unable to find a collision-free plan to move the arm.
+You can also see that the default planning time (before MoveIt gives up) is 15 seconds.
+Part of the reason is that the gripper poses to reach are quite high up.
+So, your demo will actually need to raise the torso first:
+```py
+torso = fetch_api.Torso()
+torso.set_height(fetch_api.Torso.MAX_HEIGHT)
+```
+
+In this case, it's also perfectly reasonable to use the `arm_with_torso` group so MoveIt can move the torso up for you automatically.
+But, by not doing so, we were able to test our error code handling.
+And, depending on your application, you may want to keep the torso height under your control.
+
+Run your demo again and you should see the robot raise its torso and wave its gripper.
+However, if you watch it closely, you may notice that it occasionally takes weird paths that don't look like waves at all, especially in the beginning.
+
+# Avoiding infinite timeouts
+You may find that your demo gets stuck.
+After waving one or two times, it may just sit there forever, not even returning an error message.
+There are two issues here:
+1. There is a problem running MoveIt
+1. Your program is not detecting this error and is just silently waiting for an infinite amount of time
+
+We will focus first on problem 2.
+Let's look again at `move_to_base_pose`.
+
+If you followed the Fetch tutorial, you probably added a line like this:
+```py
+self._move_group.moveToPose(pose_stamped, Arm.EE_FRAME)
+```
+
+As discussed earlier, the `MoveGroupInterface` is a wrapper around an ActionClient.
+Calling `moveToPose` makes the robot move, so it must be sending a goal at this point.
+In the past, when we used ActionClients, we saw that sending goals worked like so:
+```py
+client.send_goal(goal)
+client.wait_for_result(rospy.Duration(10))
+result = client.get_result()
+```
+
+Or alternatively,
+```py
+client.send_goal_and_wait(goal, rospy.Duration(10))
+```
+
+In other words, we were supplying a timeout value.
+But when sending the MoveGroup goal, we are not supplying a timeout.
+This means that your program could potentially hang here, and in fact, it is.
+
+Look up the Python documentation for MoveGroupInterface.
+To do this, do a web search for "moveit_python movegroupinterface", and change "kinetic" or "jade" in the URL to "indigo".
+
+Now look at the documentation for `moveToPose`.
+Notice that it has a `wait` arg, evil-ly set by default to `True`.
+This is what allows the MoveGroup action client to wait for an infinite time.
+
+**Tip:** *Almost nothing in a robot system should be allowed to wait for an infinite time. Put timeouts on everything and fail fast.*
+
+To fix this, modify your code to set `wait=False` explicitly.
+Then, do a wait with a timeout like so:
+```py
+self._move_group.moveToPose(pose_stamped, Arm.EE_FRAME, wait=False)
+move_action = self._move_group.get_move_action()
+move_action.wait_for_result(rospy.Duration(20))
+result = move_action.get_result()
+```
+
+# The MoveIt problem
+Look at the output of `move_group.launch`, when it was getting stuck.
+You might see something like:
+
+```
+/move_group TrajectoryExecutionManager::validate:974: 
+Invalid Trajectory: start point deviates from current robot state more than 0.01
+joint 'upperarm_roll_joint': expected: -0.640106, current: -0.62881
+```
+
+This is an internal error where MoveIt is unable to run a trajectory.
+If only we could detect this error and just send a new goal on failure!
+Luckily, we just implemented the fix.
+
+If you run your demo again, you will see that it might take a long time between waves, but after 20 seconds (or whatever you set the timeout to), you will see some error messages appear (meaning you could handle these errors programmatically) and the robot will wave once.
+And, after a few iterations, the problem will probably fix itself (i.e., your robot should be waving smoothly without much pause).
