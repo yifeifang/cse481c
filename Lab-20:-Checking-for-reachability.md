@@ -132,7 +132,7 @@ def main():
             rospy.loginfo('No plan found.')
         arm.cancel_all_goals()
     elif command == 'ik':
-        pass        
+        pass
     else:           
         print_usage()
                     
@@ -147,4 +147,66 @@ rosrun applications check_cart_pose.py 0.5 0 1
 /check_cart_pose main:41: Found plan!
 rosrun applications check_cart_pose.py 1 0 1
 /check_cart_pose main:41: No plan found.
+```
+
+# Inverse kinematics
+You can compute the inverse kinematics given an end-effector pose by calling the `compute_ik` service provided by MoveIt.
+If you look at the definition of the service, it can be quite intimidating.
+However, only a few fields really need to be filled out; the rest is for "seeding" the IK with an approximate solution to get the result faster.
+
+Add a method to `Arm` called `compute_ik`:
+
+```py
+from moveit_msgs.srv import GetPositionIK, GetPositionIKRequest
+
+# In __init__ method
+self._compute_ik = rospy.ServiceProxy('compute_ik', GetPositionIK)
+```
+
+We are feeling generous and will just give you the `compute_ik` method :).
+Be sure to take a look and make sure you understand what's going on.
+
+```py
+def compute_ik(self, pose_stamped, timeout=rospy.Duration(5)):
+    """Computes inverse kinematics for the given pose.
+
+    Note: if you are interested in returning the IK solutions, we have
+        shown how to access them.
+
+    Args:
+        pose_stamped: geometry_msgs/PoseStamped.
+        timeout: rospy.Duration. How long to wait before giving up on the
+            IK solution.
+
+    Returns: True if the inverse kinematics were found, False otherwise.
+    """
+    request = GetPositionIKRequest()
+    request.ik_request.pose_stamped = pose_stamped
+    request.ik_request.group_name = 'arm'
+    request.ik_request.timeout = timeout
+    response = self._compute_ik(request)
+    error_str = moveit_error_string(response.error_code.val)
+    success = error_str == 'SUCCESS'
+    if not success:
+        return False
+    joint_state = response.solution.joint_state
+    for name, position in zip(joint_state.name, joint_state.position):
+        if name in ArmJoints.names():
+            rospy.loginfo('{}: {}'.format(name, position))
+    return True
+```
+
+Test your demo again:
+```
+rosrun applications check_cart_pose.py ik 0.5 0 1
+/check_cart_pose compute_ik:206: shoulder_pan_joint: -0.9173148899
+/check_cart_pose compute_ik:206: shoulder_lift_joint: 1.49589384052
+/check_cart_pose compute_ik:206: upperarm_roll_joint: 1.83205661666
+/check_cart_pose compute_ik:206: elbow_flex_joint: 2.14310886363
+/check_cart_pose compute_ik:206: forearm_roll_joint: -0.615291088829
+/check_cart_pose compute_ik:206: wrist_flex_joint: -0.720001579756
+/check_cart_pose compute_ik:206: wrist_roll_joint: -2.57489045131
+/check_cart_pose main:46: Found IK!
+rosrun applications check_cart_pose.py ik 1 0 1                                                                                                                                 
+/check_cart_pose main:48: No IK found.
 ```
