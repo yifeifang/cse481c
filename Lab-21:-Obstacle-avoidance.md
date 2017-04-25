@@ -84,8 +84,13 @@ pose2.pose.orientation.w = 1
 You do not need to write any special code to avoid obstacles, it is all handled for you by MoveIt!
 ```py
 arm = fetch_api.Arm()
-kwargs = { 
-    'execution_timeout': rospy.Duration(10),
+def shutdown():
+    arm.cancel_all_goals()
+rospy.on_shutdown(shutdown)
+
+kwargs = {
+    'allowed_planning_time': 15,
+    'execution_timeout': 10,
     'num_planning_attempts': 5,
     'replan': False
 }
@@ -116,5 +121,17 @@ You should see the robot easily reach the two poses.
 Uncomment the divider code and try again.
 You should see that with the given parameters, the robot is not able to reach the poses.
 
-## Attempt 2: set torso height
+## Attempt 2: Set torso height
 The robot should fail to find a motion plan relatively quickly.
+If you look at the output of `move_group.launch`, you might see messages like:
+```
+/move_group :298: Found a contact between 'divider' (type 'Object') and 'gripper_link' (type 'Robot link'), which constitutes a collision. Contact information is not stored.
+/move_group :325: Collision checking is considered complete (collision was found and 0 contacts are stored)
+```
+
+This means that MoveIt can't find a collision-free path.
+Try raising the torso to its maximum height to help the arm get over the divider.
+
+## Attempt 3: Play with parameters
+Play around with the parameters and see if you can get the robot to consistently move its gripper from one side of the divider to the other.
+Be warned: even with lots of tweaking, it may not always work.
