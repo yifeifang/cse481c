@@ -1,60 +1,150 @@
+In the previous lab, we saw how to move the robot's arm using motion planning.
+However, what if we just want to just check whether a gripper pose is feasible, without actually running it on the robot?
+In this lab, we will explore two ways of getting this information: motion planning and inverse kinematics.
+
+To use motion planning, we will use nearly identical code as in the previous lab, but we will pass in some arguments that we have not yet explored.
+The difference between motion planning and inverse kinematics is that motion planning will tell you whether a pose is reachable from where the arm is right now, including obstacles that must be avoided.
+Inverse kinematics, however, tells you whether a pose is theoretically feasible, regardless of where the arm currently is and what obstacles there are.
+
+For example, suppose you have a sequence of five poses you want to execute.
+You can use inverse kinematics on each of those five poses to tell you if each of those is theoretically reachable.
+You can then use the motion planning approach to tell you whether the *first* pose is reachable from the current arm position.
+Once you are at the first pose, then you can run the motion planner again to tell you if the *second* pose is reachable, etc.
+
 # Check the plan
-Look at the [`moveToPose` documentation](http://docs.ros.org/indigo/api/moveit_python/html/classmoveit__python_1_1move__group__interface_1_1MoveGroupInterface.html#a4dec65c1c9de176d51ee8ff66d941894).
-It supports a few other arguments, hidden behind `kwargs`.
-To find out what those extra arguments are, look at the source code by clicking on the line number, where it says, "Defined on line 161 of move_group_interfacy.py."
+Look at the documentation for `MoveItGoalBuilder`.
+You can see that it supports many possible arguments.
+Although we will not use all of these arguments, we will add support for many of these arguments now.
 
-You can set the maximum `planning_time` to be longer or shorter, and you can set `plan_only` to True.
-If `plan_only` is true, then calling `moveToPose` will compute a motion plan, but not actually execute it on the robot.
-This is useful if you have a sequence of poses, and they all need to be reached in order.
-If you don't check that all of the poses before you start executing the sequence, you might end up with a failure with the robot's arm halfway through the sequence.
+The argument of relevance right now is `plan_only`, which is set to `False` by default.
+Setting this to `True` means that the motion planner will come up with a plan, but not execute it on the robot.
 
-Add a method to `Arm` called `check_base_pose`.
-It has the same input and output as `move_to_base_pose`, except it should not cause the robot to move.
+Update the signature of `move_to_pose` in your `Arm` class to be:
+```py
+def move_to_pose(self,
+                 pose_stamped,
+                 allowed_planning_time=10.0,
+                 execution_timeout=rospy.Duration(15.0),
+                 group_name='arm',
+                 num_planning_attempts=1,
+                 plan_only=False,
+                 replan=False,
+                 replan_attempts=5,
+                 tolerance=0.01):
+    """Moves the end-effector to a pose, using motion planning.
+
+    Args:
+        pose: geometry_msgs/PoseStamped. The goal pose for the gripper.
+        allowed_planning_time: float. The maximum duration to wait for a
+            planning result.
+        execution_timeout: rospy.Duration. The maximum duration to wait for
+            an arm motion to execute (or for planning to fail completely).
+        group_name: string. Either 'arm' or 'arm_with_torso'.
+        num_planning_attempts: int. The number of times to compute the same
+            plan. The shortest path is ultimately used. For random
+            planners, this can help get shorter, less weird paths.
+        plan_only: bool. If True, then this method does not execute the
+            plan on the robot. Useful for determining whether this is
+            likely to succeed.
+        replan: bool. If True, then if an execution fails (while the arm is
+            moving), then come up with a new plan and execute it.
+        replan_attempts: int. How many times to replan if the execution
+            fails.
+        tolerance: float. The goal tolerance, in meters.
+
+    Returns:
+        string describing the error if an error occurred, else None.
+    """
+```
+
+Now, pass all of these extra arguments to the `MoveItGoalBuilder`:
+```py
+    goal_builder = MoveItGoalBuilder()
+    goal_builder.set_pose_goal(pose_stamped)
+    goal_builder.allowed_planning_time = allowed_planning_time
+    goal_builder.num_planning_attempts = num_planning_attempts
+    goal_builder.plan_only = plan_only
+    goal_builder.replan = replan
+    goal_builder.replan_attempts = replan_attempts
+    goal_builder.tolerance = tolerance
+    goal = goal_builder.build()
+```
+
+Since it feels a bit weird to have a method called `move_to_pose` that doesn't actually move the robot's arm, you might want to add a convenience method:
+```py
+def check_pose(self, 
+               pose_stamped,
+               allowed_planning_time=10.0,
+               group_name='arm',
+               tolerance=0.01):
+    return self.move_to_pose(
+        pose_stamped,
+        allowed_planning_time=allowed_planning_time,
+        group_name=group_name,
+        tolerance=tolerance,
+        plan_only=True)
+```
 
 Next, use this demo program, `check_cart_pose.py`  to test whether it works.
 This tool will tell you whether the gripper can be moved to a certain pose, in the base frame, with the gripper pointing straight ahead (the identity orientation).
 ```py
 #! /usr/bin/env python
-                                                                                     
-from geometry_msgs.msg import Pose, Point, Quaternion                                
+
+from geometry_msgs.msg import PoseStamped
 import fetch_api
 import rospy
-import sys
-        
-                                                                                     
+
+
 def wait_for_time():
     """Wait for simulated time to begin.
-    """ 
+    """
     while rospy.Time().now().to_sec() == 0:
         pass
-        
-        
+
+
+def print_usage():
+    print 'Usage: rosrun applications check_cart_pose.py plan X Y Z'
+    print '       rosrun applications check_cart_pose.py ik X Y Z'
+
+
 def main():
     rospy.init_node('check_cart_pose')
-    wait_for_time()                                                                  
+    wait_for_time()
     argv = rospy.myargv()
-    if len(argv) < 4:
-        print 'Usage: rosrun applications check_cart_pose.py X Y Z'                  
-    x, y, z = float(argv[1]), float(argv[2]), float(argv[3])
-        
+    if len(argv) < 5:
+        print_usage()
+        return
+    command, x, y, z = argv[1], float(argv[2]), float(argv[3]), float(argv[4])
+   
     arm = fetch_api.Arm()
-    pose = Pose(Point(x, y, z), Quaternion(0, 0, 0, 1))
-    error = arm.check_base_pose(pose)
-    if error is None:
-        rospy.loginfo('Reachable')
-    else:
-        rospy.loginfo('Not reachable.') 
-    arm.cancel_all_goals()
-            
-                
-if __name__ == '__main__':                                                           
+    ps = PoseStamped()
+    ps.header.frame_id = 'base_link'
+    ps.pose.position.x = x
+    ps.pose.position.y = y
+    ps.pose.position.z = z
+    ps.pose.orientation.w = 1
+           
+    if command == 'plan':
+        error = arm.check_pose(ps, allowed_planning_time=1.0)
+        if error is None:
+            rospy.loginfo('Found plan!')
+        else:       
+            rospy.loginfo('No plan found.')
+        arm.cancel_all_goals()
+    elif command == 'ik':
+        pass        
+    else:           
+        print_usage()
+                    
+                    
+if __name__ == '__main__':
     main()
 ```
 
-Assuming the torso is at max height, you should see:
+You should see:
 ```
 rosrun applications check_cart_pose.py 0.5 0 1
-/check_cart_pose main:28: Reachable
+/check_cart_pose main:41: Found plan!
 rosrun applications check_cart_pose.py 1 0 1
-/check_cart_pose main:30: Not reachable.
+/check_cart_pose main:41: No plan found.
 ```
