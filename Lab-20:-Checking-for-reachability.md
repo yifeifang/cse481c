@@ -151,9 +151,9 @@ You will need to run `move_group.launch` if it is not still open from the previo
 This is true whenever you want to do anything with MoveIt.
 You should see:
 ```
-rosrun applications check_cart_pose.py 0.5 0 1
+rosrun applications check_cart_pose.py plan 0.5 0 1
 /check_cart_pose main:41: Found plan!
-rosrun applications check_cart_pose.py 1 0 1
+rosrun applications check_cart_pose.py plan 1 0 1
 /check_cart_pose main:41: No plan found.
 ```
 
