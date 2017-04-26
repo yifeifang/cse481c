@@ -50,3 +50,47 @@ However, you often need to specify what this transformation is relative to.
 `PoseStamped` messages contain a `header` field, which contains a `frame_id`.
 The `frame_id` is equivalent to "frame A" in the examples above.
 
+# Transforming points and poses
+Given <sup>A</sup>T<sub>B</sub>, you can take a point, written in terms of frame B (i.e., <sup>B</sup>P), and rewrite the same point in terms of frame A (i.e., <sup>A</sup>P).
+
+<sup>A</sup>P = <sup>A</sup>T<sub>B</sub> * <sup>B</sup>P
+
+Here is a quick sanity check: the point (1, 0, 0) in frame B is the unit X axis of B.
+
+Using the matrix from Example 1:
+```
+| cos(45) -sin(45) 0  0   |
+| sin(45)  cos(45) 0  0   |
+| 0        0       1  0.5 |
+| 0        0       0  1   |
+```
+
+Let's add an extra 1 to the end of <sup>B</sup>P to make it 4-dimensional.
+Then <sup>A</sup>T<sub>B</sub> * <sup>B</sup>P is:
+```
+| cos(45) -sin(45) 0  0   |     | 1 |
+| sin(45)  cos(45) 0  0   |  *  | 0 |
+| 0        0       1  0.5 |     | 0 |
+| 0        0       0  1   |     | 1 |
+```
+
+So <sup>A</sup>P is (cos 45, sin 45, 0.5).
+
+# Transforming poses
+Let's say your perception module tells you there's an object at this pose in the `base_link` frame:
+```
+position:
+  x: 0.6
+  y: -0.1
+  z: 0.7
+orientation:
+  x: 0
+  y: 0
+  z: 0.38268343
+  w: 0.92387953
+```
+
+You want to position the robot's gripper, specifically, the `gripper_link` frame, such that it is aligned with the object's X axis and 10 centimeters in front of the object.
+What is the pose that you should send the end-effector to?
+
+The pose of the object can be thought of as <sup>base_link</sup>T<sub>object</sub>.
