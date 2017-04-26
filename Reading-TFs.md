@@ -67,4 +67,17 @@ If you run into this issue, either:
 
 ## End-effector reader
 Create a demo file called `ee_pose_demo.py`.
-This demo should continuously output the pose of the gripper in the base_link frame.
+This demo should print the pose of the gripper in the base_link frame at 1 Hz (once per second).
+Look in RViz at the frames: `l_gripper_finger_link`, `r_gripper_finger_link`, `gripper_link`, and `wrist_roll_link`. Which one seems the most useful to you in terms of knowing the pose of gripper?
+
+With a fresh start to the simulation, you should get output like this:
+```
+/ee_pose_demo main:27: "base_link" passed to lookupTransform argument target_frame does not exist. 
+/ee_pose_demo main:25: (0.05036409394009646, -0.12756453584230829, 0.7372668621050511) (0.4597989456314052, -0.5031720721053123, 0.5115885301146148, 0.5231443121211033)
+/ee_pose_demo main:25: (0.050364257556109585, -0.12756826086411038, 0.7372625330849651) (0.45979833367252215, -0.5031742639564221, 0.5115873280941738, 0.5231439172707152)
+/ee_pose_demo main:25: (0.050367129880986836, -0.12756514696343355, 0.7372621317205437) (0.459801434763965, -0.503170042322425, 0.5115864556376518, 0.5231461053150959)
+```
+
+If you output the errors you get and start using the `TransformListener` without inserting a `rospy.sleep`, you should see that the first call `lookupTransform` fails because the `TransformListener` doesn't even know about `base_link` yet.
+
+Keeping your node running, try raising the torso or running one of your other demos and see if the output changes correctly.
