@@ -188,6 +188,15 @@ This will not be in the dropdown list, it is just an imaginary frame of our own 
 Next, add a Marker display on the `visualization_marker` topic and add an `Axes` display with reference frame set to `frame_a`.
 
 Fill out `transform_to_pose` and run the script.
+Use `tf.transformations` to help convert between quaternions and matrices:
+```py
+import tf.transformations as tft
+import numpy as np
+
+tft.quaternion_from_matrix(matrix)
+tft.quaternion_matrix([x, y, z, w]) # Takes in a plain list of numbers.
+```
+
 If you have implemented `transform_to_pose` correctly, you should get this:
 ![image](https://cloud.githubusercontent.com/assets/1175286/25461997/f3a5d834-2aa0-11e7-9484-1e04c096a3eb.png)
 
