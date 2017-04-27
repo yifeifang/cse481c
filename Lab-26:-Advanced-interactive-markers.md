@@ -42,7 +42,10 @@ R_FINGER_MESH = 'package://fetch_description/meshes/r_gripper_finger_link.STL'
 
 You will need to create 3 markers: one for the gripper and two for the fingertips.
 These markers will be added to a single `InteractiveMarkerControl`, which in turn is added to your `InteractiveMarker`.
-See what happens when you 
+You should create a function that, given a `PoseStamped`, returns either an `InteractiveMarker` or a list of 3 Markers.
+See what the marker looks like when you place it at 0, 0, 0, in the `base_link` frame.
+You can use the grid lines to get a sense of how the meshes are laid out (each grid square in RViz is 1 meter by 1 meter).
+You will need to make some adjustments to the fingertip positions.
 
 # What is the end-effector link?
 To our eyes, `gripper_link` is the most intuitive end-effector link.
@@ -61,3 +64,24 @@ However, you actually want the marker to be centered on the `wrist_roll_link`, l
 Use the offset above to correct this.
 
 ![image](https://cloud.githubusercontent.com/assets/1175286/25469637/63b20d74-2ad2-11e7-9a38-b2defad7c8c6.png)
+
+# Creating 6 DOF controls
+Follow the [Interactive Markers: Basic Controls tutorial](http://wiki.ros.org/rviz/Tutorials/Interactive%20Markers%3A%20Basic%20Controls#Simple_6-DOF_control).
+That tutorial is written in C++ and does some unnecessary stuff for illustrative purposes, so try to extract the essence of the tutorial instead of following it directly.
+To create the arrows and rings around the marker, you will need to add 6 different controls to your interactive marker, as shown in the tutorial.
+Once you are done, the arrows and rings will probably be ginormous, so scale them down using the `scale` field of the `InteractiveMarker`.
+
+# Menu items
+An [`InteractiveMarker` msg](http://docs.ros.org/indigo/api/visualization_msgs/html/msg/InteractiveMarker.html) contains a list of `MenuEntry` msgs.
+According to the `MenuEntry` documentation, you just assign a non-zero ID to each menu entry, and set its `command_type` to `FEEDBACK`.
+Then, in your feedback callback, you can check if the `event_type` is `MENU_SELECT` and if so, use `menu_entry_id` to figure out which menu item was clicked.
+
+# Handling drag events
+If your gripper is disappearing when you drag the 6 DOF controls, you need to set `always_visible` on the control that holds the gripper.
+
+To check IK on drag events, check if the `event_type` is `POSE_UPDATE` in your feedback callback.
+
+# Changing the gripper color
+This is easy.
+Just get your `InteractiveMarker`, iterate through the list of markers that comprise your gripper visualization, and change their colors individually.
+Then, reinsert your `InteractiveMarker` to your interactive marker server and call `applyChanges()`.
