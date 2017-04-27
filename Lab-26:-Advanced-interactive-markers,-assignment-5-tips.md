@@ -124,6 +124,7 @@ Then, reinsert your `InteractiveMarker` to your interactive marker server and ca
 
 # Assignment videos
 Here are some videos of what your assignment might look like.
+Keep in mind that these videos only show a simulated robot, but the assignment calls for running your code on the real robot.
 
 Gripper teleop:
 
