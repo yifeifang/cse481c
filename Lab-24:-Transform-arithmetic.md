@@ -196,7 +196,61 @@ You can see that `b_in_a` describes a frame that is rotated by 45 degrees and ra
 Now, uncomment the last part, which implements the equation <sup>A</sup>T<sub>B</sub> * <sup>B</sup>P, and you should see a yellow arrow pointing to frame B's unit X vector:
 ![image](https://cloud.githubusercontent.com/assets/1175286/25462432/c013994a-2aa3-11e7-8374-0e6bc1c7b8f1.png)
 
-# Transforming poses
+## Transforming poses
+Transforming a pose is similar to transforming a point.
+Let's say you have the transform describing B in terms of A, and you have a pose that describes C in terms of B.
+Then, you can chain transformations together like so:
+
+<sup>A</sup>T<sub>C</sub> = <sup>A</sup>T<sub>B</sub> * <sup>B</sup>T<sub>C</sub>
+
+And this can go on and on:
+
+<sup>A</sup>T<sub>E</sub> = <sup>A</sup>T<sub>B</sub> * <sup>B</sup>T<sub>C</sub> * <sup>C</sup>T<sub>D</sub> * <sup>D</sup>T<sub>E</sub>
+
+# Inverse of a transform
+Given <sup>A</sup>T<sub>B</sub>, what is <sup>B</sup>T<sub>A</sub>?
+
+Well, if:
+
+<sup>A</sup>P = <sup>A</sup>T<sub>B</sub> * <sup>B</sup>P
+
+Then we should be able redescribe <sup>A</sup>P in frame B with:
+
+<sup>B</sup>P = <sup>B</sup>T<sub>A</sub> * <sup>A</sup>P
+
+So, substituting back:
+
+<sup>A</sup>P = <sup>A</sup>T<sub>B</sub> * <sup>B</sup>T<sub>A</sub> * <sup>A</sup>P
+
+<sup>A</sup>T<sub>B</sub> * <sup>B</sup>T<sub>A</sub> = I
+
+<sup>B</sup>T<sub>A</sub> = <sup>A</sup>T<sup>-1</sup><sub>B</sub>
+
+**Example:**
+Your perception module tells you that there is an object exactly 1 meter in front of the camera frame (`camera_link`).
+From TF, you can get `base_link` -> `camera_link` and `base_link` -> `gripper_link`.
+Where is the object relative to the gripper?
+
+*Answer*:
+We have:
+
+<sup>base_link</sup>T<sub>camera_link</sub>
+
+<sup>base_link</sup>T<sub>gripper_link</sub>
+
+And the position of the object P is in the camera frame:
+
+<sup>camera_link</sup>P
+
+We want <sup>gripper_link</sup>P. We can chain transformations like so, with the `base_link` -> `gripper_link` transform backwards:
+
+<sup>gripper_link</sup>P = <sup>gripper_link</sup>T<sub>base_link</sub> * <sup>base_link</sup>T<sub>camera_link</sub> * <sup>camera_link</sup>P
+
+So we just invert the one backward transform:
+
+<sup>gripper_link</sup>P = <sup>base_link</sup>T<sup>-1</sup><sub>gripper_link</sub> * <sup>base_link</sup>T<sub>camera_link</sub> * <sup>camera_link</sup>P
+
+# Putting it into practice
 Let's say your perception module tells you there's an object at this pose in the `base_link` frame:
 ```
 position:
@@ -210,7 +264,31 @@ orientation:
   w: 0.92387953
 ```
 
-You want to position the robot's gripper, specifically, the `gripper_link` frame, such that it is aligned with the object's X axis and 10 centimeters in front of the object.
-What is the pose that you should send the end-effector to?
+You want to position the robot's gripper, specifically, the `gripper_link` frame, such that it is aligned with the object's X axis and 10 centimeters behind the object (by "behind the object" we mean closer to the robot).
+What is the pose (called the pre-grasp pose) that you should send the end-effector to, in the `base_link` frame?
 
 The pose of the object can be thought of as <sup>base_link</sup>T<sub>object</sub>.
+We first specify the pre-grasp pose in terms of the object's pose.
+The pre-grasp pose is aligned with the object, meaning it has the same orientation.
+So relative to the object frame, the pre-grasp frame should have the identity orientation.
+A point 10 cm behind the object is <sup>object</sup>P = (-0.1, 0, 0).
+This specifies the pre-grasp pose, which you can convert into matrix form: <sup>object</sup>T<sub>pre-grasp</sub>.
+
+Now, you can compute <sup>base_link</sup>T<sub>pre-grasp</sub> and convert it back into a pose message.
+
+Write a script or open a Python interpreter to do these calculations.
+Keep in mind that in NumPy, you use `np.dot(A, B)` to multiple matrices or vectors.
+`A * B` does element-wise multiplication instead!
+
+You should get this answer:
+```
+position: 
+  x: 0.529289321708
+  y: -0.170710677946
+  z: 0.7
+orientation: 
+  x: 0.0
+  y: 0.0
+  z: 0.382683431234
+  w: 0.92387953298
+```
