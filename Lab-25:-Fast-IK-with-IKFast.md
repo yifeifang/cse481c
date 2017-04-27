@@ -51,7 +51,7 @@ arm_with_torso:
   kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
   kinematics_solver_search_resolution: 0.005
   kinematics_solver_timeout: 0.005
-  kinematics_solver_attempts: 
+  kinematics_solver_attempts: 3
 ```
 
 Note that this new, faster IK will only work with the `arm` MoveGroup, not `arm_with_torso`.
