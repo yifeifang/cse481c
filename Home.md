@@ -11,6 +11,7 @@ A list of labs for the class is below.
 ### Thursday
 - [[Lab 23: TF]]
 - [[Lab 24: Transform arithmetic]]
+- [[Lab 25: Fast IK with IKFast]]
 
 ## Week 4
 ### Tuesday
