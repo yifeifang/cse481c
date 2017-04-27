@@ -22,10 +22,27 @@ class GripperTeleop(object):
     def handle_feedback(self, feedback):
         pass
 
+
+class AutoPickTeleop(object):
+    def __init__(self, arm, gripper, im_server):
+        self._im_server = im_server
+        # obj_im = InteractiveMarker() ...
+        self._im_server.insert(obj_im, feedback_cb = self.handle_feedback)
+
+    def start(self):
+        pass
+
+    def handle_feedback(self, feedback):
+        pass
+
+
 def main():
     ...
     im_server = InteractiveMarkerServer('gripper_im_server')
     teleop = GripperTeleop(arm, gripper, im_server)
+    auto_pick = AutoPickTeleop(arm, gripper, im_server)
+    teleop.start()
+    auto_pick.start()
     rospy.spin()
 ```
 
@@ -70,6 +87,23 @@ Follow the [Interactive Markers: Basic Controls tutorial](http://wiki.ros.org/rv
 That tutorial is written in C++ and does some unnecessary stuff for illustrative purposes, so try to extract the essence of the tutorial instead of following it directly.
 To create the arrows and rings around the marker, you will need to add 6 different controls to your interactive marker, as shown in the tutorial.
 Once you are done, the arrows and rings will probably be ginormous, so scale them down using the `scale` field of the `InteractiveMarker`.
+
+You will need to add 6 DOF markers to many grippers, so we recommend creating a function that returns a list of `InteractiveMarkerControl`.
+You can then append these controls to an interactive marker:
+```py
+controls = make_6dof_controls()
+interactive_marker.controls.extend(controls)
+```
+
+If you are following the C++ tutorial and for some reason, only one of the 6 DOF controls is showing up, then it might be because you are forgetting to use `copy.deepcopy`:
+```py
+control = InteractiveMarkerControl()
+control.name = 'move_x'
+controls.append(control)
+control.name = 'rotate_x'
+controls.append(control)
+# Oops, control is the same object in both cases. You need to make a copy with copy.deepcopy(control).
+```
 
 # Menu items
 An [`InteractiveMarker` msg](http://docs.ros.org/indigo/api/visualization_msgs/html/msg/InteractiveMarker.html) contains a list of `MenuEntry` msgs.
