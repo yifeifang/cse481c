@@ -12,6 +12,7 @@ A list of labs for the class is below.
 - [[Lab 23: TF]]
 - [[Lab 24: Transform arithmetic]]
 - [[Lab 25: Fast IK with IKFast]]
+- [[Lab 26: Advanced interactive markers, assignment 5 tips]]
 
 ## Week 4
 ### Tuesday
