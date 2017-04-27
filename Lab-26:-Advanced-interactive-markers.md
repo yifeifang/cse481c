@@ -87,3 +87,14 @@ To check IK on drag events, check if the `event_type` is `POSE_UPDATE` in your f
 This is easy.
 Just get your `InteractiveMarker`, iterate through the list of markers that comprise your gripper visualization, and change their colors individually.
 Then, reinsert your `InteractiveMarker` to your interactive marker server and call `applyChanges()`.
+
+# Assignment videos
+Here are some videos of what your assignment might look like.
+
+Gripper teleop:
+
+[![image](http://i3.ytimg.com/vi/fmbaHcKUPgU/hqdefault.jpg)](https://www.youtube.com/watch?v=fmbaHcKUPgU)
+
+Gripper teleop with automated pick sequence:
+
+[![image](http://i3.ytimg.com/vi/Scc5ph2ZA0s/hqdefault.jpg)](https://www.youtube.com/watch?v=Scc5ph2ZA0s)
