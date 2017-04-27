@@ -76,6 +76,8 @@ An [`InteractiveMarker` msg](http://docs.ros.org/indigo/api/visualization_msgs/h
 According to the `MenuEntry` documentation, you just assign a non-zero ID to each menu entry, and set its `command_type` to `FEEDBACK`.
 Then, in your feedback callback, you can check if the `event_type` is `MENU_SELECT` and if so, use `menu_entry_id` to figure out which menu item was clicked.
 
+Finally, you will need to set the `interaction_mode` of the control that holds your gripper markers to `MENU`.
+
 # Handling drag events
 If your gripper is disappearing when you drag the 6 DOF controls, you need to set `always_visible` on the control that holds the gripper.
 
