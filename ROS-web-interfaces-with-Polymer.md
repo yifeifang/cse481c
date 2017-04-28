@@ -456,7 +456,7 @@ If you would like to learn more about Polymer, you can read:
 
 In case it wasn't clear where the code snippets above went, here is the full code.
 
-**map_annotator/frontend2/src/map-annotator-app/map-annotator-app.html**:
+**map-annotator-app.html:**
 ```html
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
@@ -553,6 +553,7 @@ In case it wasn't clear where the code snippets above went, here is the full cod
 </dom-module>
 ```
 
+**map-annotator-pose.html:**
 ```html
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
