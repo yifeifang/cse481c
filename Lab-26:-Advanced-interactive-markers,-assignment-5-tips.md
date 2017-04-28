@@ -14,7 +14,7 @@ class GripperTeleop(object):
     def __init__(self, arm, gripper, im_server):
         self._im_server = im_server
         # gripper_im = InteractiveMarker() ...
-        self._im_server.insert(gripper_im, feedback_cb = self.handle_feedback)
+        self._im_server.insert(gripper_im, feedback_cb=self.handle_feedback)
 
     def start(self):
         pass
@@ -27,7 +27,7 @@ class AutoPickTeleop(object):
     def __init__(self, arm, gripper, im_server):
         self._im_server = im_server
         # obj_im = InteractiveMarker() ...
-        self._im_server.insert(obj_im, feedback_cb = self.handle_feedback)
+        self._im_server.insert(obj_im, feedback_cb=self.handle_feedback)
 
     def start(self):
         pass
