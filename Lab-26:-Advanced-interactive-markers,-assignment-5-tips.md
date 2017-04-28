@@ -220,7 +220,7 @@ roslaunch fetch_api move_group.launch
 
 Make sure you don't get any red error messages while launching MoveIt.
 
-## 4. Add the obstacles and position the robot
+## 5. Add the obstacles and position the robot
 On your lab computer, run RViz.
 ```
 setrobot astro
@@ -245,7 +245,7 @@ You should see something like this:
 
 Do not continue unless you see the obstacles match up with the point cloud.
 
-## 5. Run your gripper teleop node
+## 6. Run your gripper teleop node
 Run your gripper teleop node on the robot.
 By "on the robot" we mean inside your SSH terminal.
 
@@ -253,7 +253,7 @@ By "on the robot" we mean inside your SSH terminal.
 rosrun applications gripper_teleop.py # Or whatever it's named
 ```
 
-## 6. Execute actions carefully
+## 7. Execute actions carefully
 When commanding the arm to move, be very careful.
 You should always have someone on the left side of the robot, ready to press the robot's runstop.
 Make sure that person knows when you are about to execute a motion plan on the robot.
@@ -267,7 +267,7 @@ It often helps to grasp the object from the side and at a slight vertical angle.
 That way, you keep the bulky wrist away from obstacles, only putting the fingertips at risk.
 Grasping from the side also allows you to maintain vision of the object in RViz.
 
-## 7. Run-stop the robot
+## 8. Run-stop the robot
 When you are done, runstop the robot.
 This will prevent you or other teams from accidentally running motion plans on the real robot.
 
