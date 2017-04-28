@@ -122,14 +122,175 @@ This is easy.
 Just get your `InteractiveMarker`, iterate through the list of markers that comprise your gripper visualization, and change their colors individually.
 Then, reinsert your `InteractiveMarker` to your interactive marker server and call `applyChanges()`.
 
+# Running on the real robot
+
+The robot's wireless connection is very slow for some reason.
+While we address this issue, you will need to take the following steps:
+1. Update your code
+1. Add assignment 5 obstacles file to your repository
+1. Ship your code to the robot
+1. Run MoveIt on the robot
+1. Add the obstacles and position the robot
+1. Run your gripper teleop node
+1. Execute actions carefully
+1. Run-stop the robot
+
+## 1. Update your code
+We recommend changing the default motion planning algorithm.
+In `moveit_goal_builder.py`, edit `__init__()` and change:
+```
+self.planner_id = 'RRTConnectkConfigDefault'
+```
+
+Additionally, when you create your interactive marker servers, set the `q_size` arg to a small number like 2:
+```py
+im_server = InteractiveMarkerServer('gripper_im_server', q_size=2)
+auto_pick_server = InteractiveMarkerServer('auto_pick_im_server', q_size=2)
+```
+
+## 2. Assignment 5 obstacles file
+You **must** run this code to add the bottom and top shelves of the classroom into the PlanningScene.
+Add this code to your repository in `applications/scripts/a5_obstacles.py`.
+Mark it as executable and push it to Github.
+
+```py
+#! /usr/bin/env python
+
+from moveit_python import PlanningSceneInterface
+import fetch_api
+import rospy
+
+
+def wait_for_time():
+    """Wait for simulated time to begin.
+    """
+    while rospy.Time().now().to_sec() == 0:
+        pass
+
+
+def print_usage():
+    print 'Usage: rosrun applications a5_obstacles.py'
+    print 'Drive the robot until the PlanningScene lines up with the point cloud.'
+
+
+def main():
+    rospy.init_node('a5_obstacles')
+    wait_for_time()
+
+    planning_scene = PlanningSceneInterface('base_link')
+    planning_scene.clear()
+    planning_scene.removeCollisionObject('top_shelf')
+    planning_scene.removeCollisionObject('bottom_shelf')
+    planning_scene.addBox('top_shelf', 0.32, 1, 0.4, 0.99, 0, 1.64)
+    planning_scene.addBox('bottom_shelf', 0.5, 1, 1.09, 0.9, 0, 0.545)
+
+    rospy.sleep(2)
+
+
+if __name__ == '__main__':
+    main()
+```
+
+## 3. Ship your code to the robot
+Your code will only run at a reasonable speed if you run it directly on the robot.
+To do this, log into `astro` with your team's username:
+
+```
+ssh teamN@astro
+mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws
+catkin init
+cd ~/catkin_ws/src
+git clone https://github.com/cse481sp17/teamN.git cse481c
+catkin build
+source ~/.bashrc
+```
+
+Make sure that your IKFast plugin is also in the repository and that you've built it.
+
+You may also generate an SSH key pair on the robot and add it to Github, as in Lab 1.
+
+## 4. Run MoveIt on the robot
+
+While SSH'ed into the robot, run the code below.
+You might want to open a tmux window first, so that you don't have to keep opening terminal windows to SSH into astro.
+```
+roslaunch fetch_api move_group.launch
+```
+
+Make sure you don't get any red error messages while launching MoveIt.
+
+## 4. Add the obstacles and position the robot
+On your lab computer, run RViz.
+```
+setrobot astro
+rosrun rviz rviz
+```
+
+- You may notice RViz being slower than normal.
+- Add a PointCloud2 display and select the `/head_camera/depth_downsample/points` topic.
+- You may want to set the ColorTransformer to AxisColor.
+- Also add a PlanningScene display, a Trajectory display, and your interactive marker servers.
+
+While SSH'ed into the robot, add the obstacles:
+```
+rosrun applications a5_obstacles.py
+```
+
+The obstacles are specified in the `base_link` frame.
+Carefully drive the robot around [using the joystick](http://docs.fetchrobotics.com/teleop.html) until the obstacles match up with the point cloud.
+It may help to change the color of the PlanningScene (e.g., to dark red) to help see the point cloud.
+You should see something like this:
+![image](https://cloud.githubusercontent.com/assets/1175286/25516110/6ab1a0d2-2b9d-11e7-8984-568028f2dcef.png)
+
+Do not continue unless you see the obstacles match up with the point cloud.
+
+## 5. Run your gripper teleop node
+Run your gripper teleop node on the robot.
+By "on the robot" we mean inside your SSH terminal.
+
+```
+rosrun applications gripper_teleop.py # Or whatever it's named
+```
+
+## 6. Execute actions carefully
+When commanding the arm to move, be very careful.
+You should always have someone on the left side of the robot, ready to press the robot's runstop.
+Make sure that person knows when you are about to execute a motion plan on the robot.
+
+Do not directly make a motion plan to a pre-grasp pose.
+Even with the obstacles in the planning scene, various imprecisions in the system might lead to a collision anyway.
+Instead, guide the arm to a clear area above the obstacle (but below the top shelves) using a sequence of movements.
+
+Check the visualization from a multitude of angles, and make sure the gripper and the fingertips are not intersecting with the point cloud.
+It often helps to grasp the object from the side and at a slight vertical angle.
+That way, you keep the bulky wrist away from obstacles, only putting the fingertips at risk.
+Grasping from the side also allows you to maintain vision of the object in RViz.
+
+## 7. Run-stop the robot
+When you are done, runstop the robot.
+This will prevent you or other teams from accidentally running motion plans on the real robot.
+
+You should also close any terminal windows in which you ran `setrobot astro`, such as your RViz terminal.
+It often helps to isolate any terminal windows in which you run `setrobot astro` in a single tmux session, so that you can easily prevent yourself from accidentally running code on the real robot.
+
+## If the arm stops working
+If the arm stops working, SSH into the robot and [reset the breakers](http://docs.fetchrobotics.com/api_overview.html#resetting-breakers).
+
 # Assignment videos
 Here are some videos of what your assignment might look like.
-Keep in mind that these videos only show a simulated robot, but the assignment calls for running your code on the real robot.
 
-Gripper teleop:
+Gripper teleop (simulation):
 
 [![image](http://i3.ytimg.com/vi/fmbaHcKUPgU/hqdefault.jpg)](https://www.youtube.com/watch?v=fmbaHcKUPgU)
 
-Gripper teleop with automated pick sequence:
+Gripper teleop (real robot):
+
+[![image](http://i3.ytimg.com/vi/n535MInCH6A/hqdefault.jpg)](https://www.youtube.com/watch?v=n535MInCH6A)
+
+Gripper teleop with automated pick sequence (simulation):
 
 [![image](http://i3.ytimg.com/vi/Scc5ph2ZA0s/hqdefault.jpg)](https://www.youtube.com/watch?v=Scc5ph2ZA0s)
+
+Gripper teleop with automated pick sequence (real robot):
+[![image](http://i3.ytimg.com/vi/ROa3rsWNPGg/hqdefault.jpg)](https://www.youtube.com/watch?v=ROa3rsWNPGg)
