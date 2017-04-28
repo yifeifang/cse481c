@@ -12,12 +12,13 @@ As usual, we recommend wrapping your code in a class:
 ```py
 class GripperTeleop(object):
     def __init__(self, arm, gripper, im_server):
+        self._arm = arm
+        self._gripper = gripper
         self._im_server = im_server
-        # gripper_im = InteractiveMarker() ...
-        self._im_server.insert(gripper_im, feedback_cb=self.handle_feedback)
 
     def start(self):
-        pass
+        # gripper_im = InteractiveMarker() ...
+        self._im_server.insert(gripper_im, feedback_cb=self.handle_feedback)
 
     def handle_feedback(self, feedback):
         pass
@@ -25,12 +26,13 @@ class GripperTeleop(object):
 
 class AutoPickTeleop(object):
     def __init__(self, arm, gripper, im_server):
+        self._arm = arm
+        self._gripper = gripper
         self._im_server = im_server
-        # obj_im = InteractiveMarker() ...
-        self._im_server.insert(obj_im, feedback_cb=self.handle_feedback)
 
     def start(self):
-        pass
+        # obj_im = InteractiveMarker() ...
+        self._im_server.insert(obj_im, feedback_cb=self.handle_feedback)
 
     def handle_feedback(self, feedback):
         pass
