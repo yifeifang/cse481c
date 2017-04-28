@@ -240,6 +240,9 @@ rosrun applications a5_obstacles.py
 The obstacles are specified in the `base_link` frame.
 Carefully drive the robot around [using the joystick](http://docs.fetchrobotics.com/teleop.html) until the obstacles match up with the point cloud.
 It may help to change the color of the PlanningScene (e.g., to dark red) to help see the point cloud.
+It might also help to move the head around to see the top and bottom shelves.
+Finally, you should set the robot to the maximum height to improve your chances of getting good motion plans.
+
 You should see something like this:
 ![image](https://cloud.githubusercontent.com/assets/1175286/25516110/6ab1a0d2-2b9d-11e7-8984-568028f2dcef.png)
 
