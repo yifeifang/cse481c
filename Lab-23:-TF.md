@@ -64,6 +64,7 @@ Extrapolation errors mean that the transform is being requested for a time that'
 If you run into this issue, either:
 - Put the transform lookup in a try-catch and retry a few times before giving up
 - Make sure that you're supplying correct timestamps (often specified in the header field of most messages)
+- Try setting the timestamp to rospy.Time(0), which means to get the latest transform.
 
 ## End-effector reader
 Create a demo file called `ee_pose_demo.py`.
