@@ -18,6 +18,7 @@ We will use Polymer 1.0 in this tutorial, which work with our ROS Polymer elemen
 
 # Install Polymer
 We have installed Node.js on the course computers.
+You may need to install Bower and Polymer:
 ```
 npm install -g bower polymer-cli
 ```
