@@ -124,6 +124,8 @@ Then, reinsert your `InteractiveMarker` to your interactive marker server and ca
 
 # Running on the real robot
 
+Make sure that you can execute the assignment tasks in simulation with the blue cube before trying it on the real robot.
+
 The robot's wireless connection is very slow for some reason.
 While we address this issue, you will need to take the following steps:
 1. Update your code
