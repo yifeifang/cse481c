@@ -1,6 +1,10 @@
 Welcome to CSE 481C, Spring 2017!
 A list of labs for the class is below.
 
+## Week 6
+### Tuesday
+- [[Lab 27: AR tags]]
+
 ## Week 5
 ### Tuesday
 - [[Lab 19: Cartesian space manipulation]]
