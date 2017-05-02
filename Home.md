@@ -3,7 +3,8 @@ A list of labs for the class is below.
 
 ## Week 6
 ### Tuesday
-- [[Lab 27: AR tags]]
+- [[Lab 27: Our first cpp package]]
+- [[Lab 28: AR tags]]
 
 ## Week 5
 ### Tuesday
