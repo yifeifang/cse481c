@@ -6,6 +6,9 @@ A list of labs for the class is below.
 - [[Lab 27: Our first cpp package]]
 - [[Lab 28: AR tags]]
 
+### Thursday
+- [[Lab 29: Assignment 6 tips]]
+
 ## Week 5
 ### Tuesday
 - [[Lab 19: Cartesian space manipulation]]
