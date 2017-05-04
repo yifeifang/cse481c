@@ -81,3 +81,6 @@ Program creation | Simulation | Enabled
 Program creation | Real world | Disabled
 Program execution | Simulation | Enabled
 Program execution | Real world | Enabled
+
+## Robot calendar
+Please use the [Fetch robot calendar](https://calendar.google.com/calendar/embed?mode=week&src=cs.washington.edu_u990n37gkbs31e810jctf0ial8%40group.calendar.google.com&ctz=America/Los_Angeles) to book time on the robot, in blocks of no more than 90 minutes.
