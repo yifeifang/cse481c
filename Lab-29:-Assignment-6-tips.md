@@ -59,6 +59,19 @@ self._controller_client.send_goal(goal)
 self._controller_client.wait_for_result()
 ```
 
+# Transform arithmetic
+You may want to revisit [[Lab 24: Transform arithmetic]].
+Let's say you have <sup>B</sup>T<sub>tag1, t1</sub> and <sup>B</sup>T<sub>wrist, t1</sub> at t=1.
+At runtime (t=2), the tag `tag1` is in a slightly different pose, given as <sup>B</sup>T<sub>tag1, t2</sub>.
+Where should the wrist go at time=2?
+
+Hints:
+- The programmed offset between the wrist and tag is <sup>tag1, t1</sup>T<sub>wrist, t1</sub>
+- <sup>A</sup>T<sub>B</sub> is the matrix inverse of <sup>B</sup>T<sub>A</sub>
+- You want to compute <sup>B</sup>T<sub>wrist, t2</sub>
+
+So, you will need to chain the transformations together and invert some of the matrices.
+
 # Developing in simulation
 You will want to test your system in simulation first, because otherwise the robot will be too busy.
 
