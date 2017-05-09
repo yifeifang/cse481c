@@ -1,6 +1,16 @@
 Welcome to CSE 481C, Spring 2017!
 A list of labs for the class is below.
 
+## Week 7
+### Tuesday
+- [[Lab 30: Introduction to point cloud processing]]
+- [[Lab 31: Planar segmentation]]
+- [[Lab 32: Euclidean clustering]]
+- [[Lab 33: Fitting bounding boxes (optional)]]
+
+### Thursday
+- [[Lab 34: Object recognition]]
+
 ## Week 6
 ### Tuesday
 - [[Lab 27: Our first cpp package]]
