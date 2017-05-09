@@ -10,6 +10,7 @@ A list of labs for the class is below.
 
 ### Thursday
 - [[Lab 34: Object recognition]]
+- [[Lab 35: Final summary and advice]]
 
 ## Week 6
 ### Tuesday
