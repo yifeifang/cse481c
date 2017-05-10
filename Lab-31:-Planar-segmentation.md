@@ -158,7 +158,7 @@ for (size_t i=0; i<indices.indices.size(); ++i) {
 
 To [reify](https://www.google.com/search?q=define+reify) a point cloud from its indices, use [`pcl::ExtractIndices`](http://docs.pointclouds.org/1.7.1/classpcl_1_1_extract_indices.html):
 ```cpp
-#include "pcl/filters/extract.h"
+#include "pcl/filters/extract_indices.h"
 
 // Given these data types:
 PointCloudC::Ptr original_cloud(new PointCloudC);
