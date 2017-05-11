@@ -40,7 +40,9 @@ catkin build
 ## Download the course starter code
 ```
 cd ~/catkin_ws/src
-git clone git@github.com:cse481sp17/cse481c.git
+git clone git@github.com:cse481sp17/cse481c.git -b week1
+cd cse481c
+git checkout -b week1
 ```
 
 Build your workspace:
