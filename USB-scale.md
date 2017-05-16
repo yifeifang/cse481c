@@ -1,0 +1,1 @@
+See https://cse481sp16news.tumblr.com/post/143815360394/usb-scale
