@@ -7,3 +7,5 @@
 [Touchscreen interfaces](https://github.com/cse481sp17/cse481c/wiki/Tutorial:-touchscreen-interfaces)
 
 [[USB scale]]
+
+[[ROS architectural tips]]
