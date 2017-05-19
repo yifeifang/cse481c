@@ -1,8 +1,6 @@
 ROS uses C++ and Python as its main languages.
 C++ tends to be used for more computationally expensive and low-level tasks, while Python is useful for high-level scripting and rapid development.
-
 This document serves as a refresher in C++ and discusses features commonly seen in ROS.
-We will use C++11 in this class, although according to [ROS standards](http://www.ros.org/reps/rep-0003.html), C++11 should not be used until Jade.
 
 # Main files
 Main files (those with a `main` function) go in the `src` folder.
