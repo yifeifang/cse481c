@@ -7,6 +7,7 @@ A list of labs for the class is below.
 - [[Lab 31: Planar segmentation]]
 - [[Lab 32: Euclidean clustering]]
 - [[Lab 33: Fitting bounding boxes (optional)]]
+- [[Lab 34: Object recognition]]
 
 ## Week 6
 ### Tuesday
