@@ -9,3 +9,5 @@
 [[USB scale]]
 
 [[ROS architectural tips]]
+
+[[Simulating point cloud locations]]
