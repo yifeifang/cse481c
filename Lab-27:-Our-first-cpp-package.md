@@ -4,7 +4,7 @@ We will start the perception package by writing a basic C++ program to save poin
 # Create the package
 This is the same as creating any other package:
 ```
-cd ~/catkin_ws/src
+cd ~/catkin_ws/src/cse481c
 catkin create pkg perception --catkin-deps roscpp rospy
 ```
 
