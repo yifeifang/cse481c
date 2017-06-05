@@ -84,3 +84,5 @@ To limit the robot's speed, edit `fetch_move_base.yaml` and set the `max_vel_x` 
 
 You can also experiment with the tolerances in `move_base.yaml` (`yaw_goal_tolerance` and `xy_goal_tolerance`).
 However, we have not tested how tight of tolerances the robot can actually achieve.
+
+You can refer to the course repository for a working example of the launch/config files and the edits we made.
