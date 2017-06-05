@@ -11,3 +11,5 @@
 [[ROS architectural tips]]
 
 [[Simulating point cloud locations]]
+
+[[Controlling navigation speed]]
