@@ -64,7 +64,7 @@ Edit `fetch_nav.launch` and replace:
 ```
 with:
 ```xml
-<arg name="move_base_include" default="$(find fetch_api)/launch/include/move_base.launch.xml" />
+<arg name="move_base_include" default="$(find fetch_api)/launch/move_base.launch.xml" />
 ```
 
 Edit `move_base.launch.xml` and replace:
